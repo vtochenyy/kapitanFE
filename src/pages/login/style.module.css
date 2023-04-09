@@ -1,0 +1,44 @@
+.mainPageContainer {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginCardContainer {
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 1px 11px rgba(0,0,0,.27);
+    animation-name: AnimateShadowOnCard;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: backwards;
+}
+
+.cardTitle {
+    font-size: 25px;
+    color: #adadad;
+}
+
+.submitBtn {
+    width: 100%;
+}
+
+@keyframes AnimateShadowOnCard {
+    0%{
+        box-shadow: 0 1px 11px rgba(0,0,0,.27);
+    }
+    25%{
+        box-shadow: 0 1px 11px #95b3dc;
+    }
+    50%{
+        box-shadow: 0 1px 11px #4096ff;
+    }
+    75%{
+        box-shadow: 0 1px 11px #95b3dc;
+    }
+    1000%{
+        box-shadow: 0 1px 11px rgba(0,0,0,.27);
+    }
+}
