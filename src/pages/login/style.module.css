@@ -16,6 +16,16 @@
     animation-fill-mode: backwards;
 }
 
+.loginCardContainerError {
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 1px 11px rgba(0,0,0,.27);
+    animation-name: AnimateShadowOnCardError;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: backwards;
+}
+
 .cardTitle {
     font-size: 25px;
     color: #adadad;
@@ -37,6 +47,24 @@
     }
     75%{
         box-shadow: 0 1px 11px #95b3dc;
+    }
+    1000%{
+        box-shadow: 0 1px 11px rgba(0,0,0,.27);
+    }
+}
+
+@keyframes AnimateShadowOnCardError {
+    0%{
+        box-shadow: 0 1px 11px rgba(0,0,0,.27);
+    }
+    25%{
+        box-shadow: 0 1px 11px #ff6666;
+    }
+    50%{
+        box-shadow: 0 1px 11px #ff0000;
+    }
+    75%{
+        box-shadow: 0 1px 11px #ff6666;
     }
     1000%{
         box-shadow: 0 1px 11px rgba(0,0,0,.27);
