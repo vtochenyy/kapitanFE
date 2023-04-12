@@ -1,6 +1,6 @@
 import style from './style.module.css';
 import {useEffect, useState} from "react";
-import {DeleteTypeOfDish, DeleteTypeOfFoodIntake, GetAllDicts} from "../../redux/actions/admin/AdminActions";
+import {DeleteDish, DeleteTypeOfDish, DeleteTypeOfFoodIntake, GetAllDicts, GetAllDishes} from "../../redux/actions/admin/AdminActions";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Menu, Table} from "antd";
 import AddDictRecordModal from "../../components/addDictREcordModel/addDictRecordModal";
@@ -15,6 +15,7 @@ const MainPage = () => {
     const state = useSelector(store => store.app);
     useEffect(() => {
         dispatch(GetAllDicts());
+        dispatch(GetAllDishes());
     }, [dispatch]);
 
     function getMenuItem(label, key, icon, children, type) {
@@ -42,12 +43,16 @@ const MainPage = () => {
         setIsModalOpen(true);
     }
 
-    function handleTypeOfFoodIntakeDelete(data) {
-        dispatch(DeleteTypeOfFoodIntake(data.id));
+    function handleTypeOfFoodIntakeDelete(id) {
+        dispatch(DeleteTypeOfFoodIntake(id));
     }
 
-    function handleTypeOfDishDelete(data) {
-        dispatch(DeleteTypeOfDish(data.id));
+    function handleTypeOfDishDelete(id) {
+        dispatch(DeleteTypeOfDish(id));
+    }
+
+    function handleDishDelete(id) {
+        dispatch(DeleteDish(id))
     }
 
     const columnsTypeOfFoodIntake = [
@@ -66,7 +71,7 @@ const MainPage = () => {
             dataIndex: 'actions',
             key: 'actions',
             render: (itemData, record) => {
-                return <Button onClick={() => handleTypeOfFoodIntakeDelete(record)} type='link' size='small'>Удалить</Button>
+                return <Button onClick={() => handleTypeOfFoodIntakeDelete(record.id)} type='link' size='small'>Удалить</Button>
             }
         }
     ];
@@ -87,7 +92,7 @@ const MainPage = () => {
             dataIndex: 'actions',
             key: 'actions',
             render: (itemData, record) => {
-                return <Button onClick={() => handleTypeOfDishDelete(record)} type='link' size='small'>Удалить</Button>
+                return <Button onClick={() => handleTypeOfDishDelete(record.id)} type='link' size='small'>Удалить</Button>
             }
         }
     ];
@@ -125,25 +130,31 @@ const MainPage = () => {
         },
         {
             title: 'Диета',
-            dataIndex: 'diet',
-            key: 'diet',
+            dataIndex: 'dieta',
+            key: 'dieta',
         },
         {
             title: 'Для детей',
             dataIndex: 'isForKids',
             key: 'isForKids',
+            render: (itemData, record) => {
+                return <span>{record.isForKids ? "Да" : "Нет"}</span>
+            }
         },
         {
             title: 'Тип блюда',
-            dataIndex: 'typeOfDish',
+            dataIndex: 'typeOfDishId',
             key: 'typeOfDish',
+            render: (itemData, record) => {
+                return <span>{state.dicts.typesOfDish.data.find(x => record.typeOfDishId === x.id).description}</span>
+            }
         },
         {
             title: 'Действия',
             dataIndex: 'actions',
             key: 'actions',
             render: (itemData, record) => {
-                return <Button onClick={() => handleTypeOfDishDelete(record)} type='link' size='small'>Удалить</Button>
+                return <Button onClick={() => handleDishDelete(record.id)} type='link' size='small'>Удалить</Button>
             }
         }
     ];
@@ -152,39 +163,41 @@ const MainPage = () => {
         if (type === 'all_dishes') {
             return <>
                 <Button onClick={() => setIsCreateDishModalOpen(true)} className={style.dictAddBtn} size='small'>Добавить блюдо</Button>
-                <Table size='small' columns={columnsAllDishes}/>
+                <Table pagination={{defaultPageSize: 18, pageSize: 18}} dataSource={state.allDishes.data} size='small' columns={columnsAllDishes}/>
             </>
         }
     }
 
-    function mapTypesOfDishToModal(typesOfDish){
+    function mapTypesOfDishToModal(typesOfDish) {
         return typesOfDish.map(x => ({value: x.description}));
     }
 
     return (
         <div className={style.mainPageContainer}>
-            <div className={style.gridContainer}>
-                <div className={style.gridItem + ' ' + style.gridItem1}>
-                    <Menu style={{borderInlineEnd: 0}} defaultSelectedKeys='all_dishes' onSelect={(e) => handleMenuItemClick(e)} items={items}/>
-                </div>
-                <div className={style.gridItem + ' ' + style.gridItem2}>
-                    {renderCentralContent(selectedMenuItem)}
-                </div>
-                <div className={style.gridItem + ' ' + style.gridItem3}>
-                    <div className={style.dictItem}>
-                        <p>Cправочник типов блюд:</p>
-                        <Button onClick={() => openModal('typeOfDishes')} className={style.dictAddBtn} size='small'>Добавить запись</Button>
-                        <Table loading={state.dicts.typesOfDish.loading} dataSource={state.dicts.typesOfDish.data} pagination={{defaultPageSize: 5, pageSize: 5}} size="small" bordered columns={columnsTypeOfDish}/>
+            {sessionStorage.getItem('isAuth') === 'true' ? <>
+                <div className={style.gridContainer}>
+                    <div className={style.gridItem + ' ' + style.gridItem1}>
+                        <Menu style={{borderInlineEnd: 0}} defaultSelectedKeys='all_dishes' onSelect={(e) => handleMenuItemClick(e)} items={items}/>
                     </div>
-                    <div className={style.dictItem}>
-                        <p>Cправочник типов приёмов пищи:</p>
-                        <Button onClick={() => openModal('typeOfFoodIntake')} className={style.dictAddBtn} size='small'>Добавить запись</Button>
-                        <Table loading={state.dicts.typesOfFoodIntake.loading} dataSource={state.dicts.typesOfFoodIntake.data} pagination={{defaultPageSize: 5, pageSize: 5}} size="small" bordered columns={columnsTypeOfFoodIntake}/>
+                    <div className={style.gridItem + ' ' + style.gridItem2}>
+                        {renderCentralContent(selectedMenuItem)}
+                    </div>
+                    <div className={style.gridItem + ' ' + style.gridItem3}>
+                        <div className={style.dictItem}>
+                            <p>Cправочник типов блюд:</p>
+                            <Button onClick={() => openModal('typeOfDishes')} className={style.dictAddBtn} size='small'>Добавить запись</Button>
+                            <Table loading={state.dicts.typesOfDish.loading} dataSource={state.dicts.typesOfDish.data} pagination={{defaultPageSize: 5, pageSize: 5}} size="small" bordered columns={columnsTypeOfDish}/>
+                        </div>
+                        <div className={style.dictItem}>
+                            <p>Cправочник типов приёмов пищи:</p>
+                            <Button onClick={() => openModal('typeOfFoodIntake')} className={style.dictAddBtn} size='small'>Добавить запись</Button>
+                            <Table loading={state.dicts.typesOfFoodIntake.loading} dataSource={state.dicts.typesOfFoodIntake.data} pagination={{defaultPageSize: 5, pageSize: 5}} size="small" bordered columns={columnsTypeOfFoodIntake}/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <AddDictRecordModal typeOfDict={typeOfDict} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
-            <AddDishModal typeOfDish={state.dicts.typesOfDish.data} typesOfDishMapped={mapTypesOfDishToModal(state.dicts.typesOfDish.data)} isModalOpen={isCreateDishModalOpen} setIsModalOpen={setIsCreateDishModalOpen}/>
+                <AddDictRecordModal typeOfDict={typeOfDict} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+                <AddDishModal typeOfDish={state.dicts.typesOfDish.data} typesOfDishMapped={mapTypesOfDishToModal(state.dicts.typesOfDish.data)} isModalOpen={isCreateDishModalOpen} setIsModalOpen={setIsCreateDishModalOpen}/>
+            </> : <div>Не авторизован</div>}
         </div>
     )
 }

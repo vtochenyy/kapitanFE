@@ -1,12 +1,28 @@
 import style from './style.module.css';
 import {AutoComplete, Button, Checkbox, Dropdown, Form, Input, InputNumber, Modal} from "antd";
 import {useForm} from "antd/es/form/Form";
+import {useDispatch} from "react-redux";
+import {CreateDish} from "../../redux/actions/admin/AdminActions";
+import {useState} from "react";
 
 const AddDishModal = ({isModalOpen, setIsModalOpen, typesOfDishMapped, typeOfDish}) => {
     const [form] = useForm();
+    const [isChecked, setIsChecked] = useState(false);
+    const dispatch = useDispatch();
 
     function handleSubmit(params) {
-        console.log({...params, typeOfDish: typeOfDish.find(x => x.description === params.typeOfDish).id});
+        console.log({
+            ...params,
+            typeOfDishId: typeOfDish.find(x => x.description === params.typeOfDishId).id,
+            isForKids: isChecked
+        });
+        dispatch(CreateDish(
+            {
+                ...params,
+                typeOfDishId: typeOfDish.find(x => x.description === params.typeOfDishId).id,
+                isForKids: isChecked
+            }
+        ));
         setIsModalOpen(false);
         form.resetFields();
     }
@@ -16,7 +32,7 @@ const AddDishModal = ({isModalOpen, setIsModalOpen, typesOfDishMapped, typeOfDis
         form.resetFields();
     }
 
-    return <Modal footer={null} onCancel={handleCancel} open={isModalOpen}>
+    return <Modal centered footer={null} onCancel={handleCancel} open={isModalOpen}>
         <p className={style.modalTitle}>Добавление записи</p>
         <Form form={form} onFinish={handleSubmit}>
             <div className={style.inputs}>
@@ -40,13 +56,13 @@ const AddDishModal = ({isModalOpen, setIsModalOpen, typesOfDishMapped, typeOfDis
                         <InputNumber name="code" min={1} max={20} placeholder="Калории"/>
                     </Form.Item>
                 </div>
-                <Form.Item className={style.discInput} name='diet'>
+                <Form.Item className={style.discInput} name='dieta'>
                     <Input name="description" placeholder="Диета"/>
                 </Form.Item>
                 <Form.Item className={style.discInput} name='isForKids'>
-                    <Checkbox>Для детей?</Checkbox>
+                    <Checkbox onChange={() => setIsChecked(prev => !prev)} checked={isChecked} name='isForKids'>Для детей?</Checkbox>
                 </Form.Item>
-                <Form.Item className={style.discInput} name='typeOfDish'>
+                <Form.Item className={style.discInput} name='typeOfDishId'>
                     <AutoComplete options={typesOfDishMapped}>
                         <Input name="description" placeholder="Тип блюда"/>
                     </AutoComplete>

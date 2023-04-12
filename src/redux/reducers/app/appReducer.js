@@ -5,10 +5,12 @@ import {
     SET_DICT_TYPE_OF_FOOD_INTAKE,
     SET_DICT_TYPE_OF_DISH,
     ACTIVATE_TYPE_OF_FOOD_INTAKES_LOADING,
-    ACTIVATE_TYPE_OF_DISH_LOADING
+    ACTIVATE_TYPE_OF_DISH_LOADING,
+    SET_ALL_DISHES, ACTIVATE_ALL_DISHES_LOADING, SET_AUTH
 } from "../../actionTypes/dish/actionTypes";
 
 let initialState = {
+    isAuth: false,
     loading: false,
     error: false,
     dicts: {
@@ -20,6 +22,10 @@ let initialState = {
             loading: false,
             data: []
         }
+    },
+    allDishes: {
+        loading: false,
+        data: []
     },
     user: {}
 }
@@ -36,6 +42,9 @@ const appReducer = (state = initialState, {type, payload}) => {
         case ACTIVATE_TYPE_OF_DISH_LOADING:
             newState.dicts.typesOfDish.loading = true;
             return newState;
+        case ACTIVATE_ALL_DISHES_LOADING:
+            newState.allDishes.loading = true;
+            return newState;
         case SET_USER_DATA:
             newState.user = payload;
             newState.loading = false;
@@ -50,6 +59,15 @@ const appReducer = (state = initialState, {type, payload}) => {
             newState.dicts.typesOfDish.data = payload;
             newState.error = false;
             newState.dicts.typesOfDish.loading = false;
+            return newState;
+        case SET_ALL_DISHES:
+            newState.allDishes.data = payload;
+            newState.allDishes.loading = false;
+            newState.error = false;
+            return newState;
+        case SET_AUTH:
+            newState.isAuth = true;
+            newState.error = false;
             return newState;
         case ERROR:
             newState.error = true;
