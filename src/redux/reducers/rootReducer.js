@@ -1,10 +1,10 @@
 import {combineReducers} from "redux";
-import dishReducer from "./dish/dishReducer";
+import appReducer from "./app/appReducer";
 
-const appReducer = combineReducers({
-    dish: dishReducer,
+const mainReducer = combineReducers({
+    app: appReducer,
 })
 
 export const rootReducer = (state, action) => {
-    return appReducer(state, action);
+    return mainReducer(state, action);
 };
