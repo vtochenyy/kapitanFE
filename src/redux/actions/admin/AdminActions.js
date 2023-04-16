@@ -285,3 +285,34 @@ export const DeleteDish = (id) => {
         }
     }
 }
+
+export const UpdateDish = (params) => {
+    return async (dispatch) => {
+        try {
+            await SimpleRequest({
+                url: `http://localhost:8111/dish/update?id=${params.id}`,
+                preCallBack: () => dispatch({type: ACTIVATE_ALL_DISHES_LOADING}),
+                postCallBack: (data) => {
+                    if (data.status < 400) {
+                        notification.success({
+                            placement: 'topRight',
+                            message: 'Уведомление',
+                            description: 'Запись обновлена!'
+                        });
+                    } else {
+                        console.log(data);
+                        notification.error({
+                            placement: 'topRight',
+                            message: 'Уведомление',
+                            description: `Ошибка: ${data.response.data.errorText}`
+                        });
+                    }
+                },
+                req_cfg: {method: 'PUT', data: params},
+            });
+            dispatch(GetAllDishes());
+        } catch (e) {
+
+        }
+    }
+}

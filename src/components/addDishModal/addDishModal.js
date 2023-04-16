@@ -1,28 +1,31 @@
 import style from './style.module.css';
-import {AutoComplete, Button, Checkbox, Dropdown, Form, Input, InputNumber, Modal} from "antd";
-import {useForm} from "antd/es/form/Form";
+import {AutoComplete, Button, Checkbox, Form, Input, InputNumber, Modal} from "antd";
 import {useDispatch} from "react-redux";
-import {CreateDish} from "../../redux/actions/admin/AdminActions";
+import {CreateDish, UpdateDish} from "../../redux/actions/admin/AdminActions";
 import {useState} from "react";
 
-const AddDishModal = ({isModalOpen, setIsModalOpen, typesOfDishMapped, typeOfDish}) => {
-    const [form] = useForm();
+const AddDishModal = ({form, isModalOpen, setIsModalOpen, typesOfDishMapped, typeOfDish, typeOfModalAction, currentIdOfUpdatedRecord}) => {
     const [isChecked, setIsChecked] = useState(false);
     const dispatch = useDispatch();
 
     function handleSubmit(params) {
-        console.log({
-            ...params,
-            typeOfDishId: typeOfDish.find(x => x.description === params.typeOfDishId).id,
-            isForKids: isChecked
-        });
-        dispatch(CreateDish(
-            {
+        console.log(params);
+        if (typeOfModalAction === 'create') {
+            dispatch(CreateDish(
+                {
+                    ...params,
+                    typeOfDishId: typeOfDish.find(x => x.description === params.typeOfDishId).id,
+                    isForKids: isChecked
+                }
+            ));
+        } else {
+            dispatch(UpdateDish({
                 ...params,
                 typeOfDishId: typeOfDish.find(x => x.description === params.typeOfDishId).id,
-                isForKids: isChecked
-            }
-        ));
+                isForKids: isChecked,
+                id: currentIdOfUpdatedRecord
+            }))
+        }
         setIsModalOpen(false);
         form.resetFields();
     }

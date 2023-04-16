@@ -1,0 +1,8 @@
+.topNavigationContainer{
+    display: flex;
+    align-items: center;
+}
+
+.topNavigationContainerButtons{
+    margin-right: 10px;
+}

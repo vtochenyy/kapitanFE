@@ -22,6 +22,14 @@
     padding: 20px;
 }
 
+.tableActionButtonsContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.gridItem2{
+    overflow-y: auto;
+}
 
 .gridItem3 {
     display: flex;

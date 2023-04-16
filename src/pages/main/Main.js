@@ -1,18 +1,24 @@
 import style from './style.module.css';
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {DeleteDish, DeleteTypeOfDish, DeleteTypeOfFoodIntake, GetAllDicts, GetAllDishes} from "../../redux/actions/admin/AdminActions";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Menu, Table} from "antd";
 import AddDictRecordModal from "../../components/addDictREcordModel/addDictRecordModal";
 import AddDishModal from "../../components/addDishModal/addDishModal";
+import React from 'react';
+import CalendarComponent from "../../components/calendar/calendar";
+import {useForm} from "antd/es/form/Form";
 
 const MainPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isCreateDishModalOpen, setIsCreateDishModalOpen] = useState(false);
     const [typeOfDict, setTypeOfDict] = useState('');
     const [selectedMenuItem, setSelectedMenuItem] = useState("all_dishes");
+    const [typeOfModalAction, setTypeOFModalAction] = useState('');
+    const [currentIdOfUpdatedRecord, setCurrentIdOfUpdatedRecord] = useState('');
     const dispatch = useDispatch();
     const state = useSelector(store => store.app);
+    const [form] = useForm();
     useEffect(() => {
         dispatch(GetAllDicts());
         dispatch(GetAllDishes());
@@ -34,8 +40,9 @@ const MainPage = () => {
 
     const items = [
         getMenuItem('Общий список блюд', 'all_dishes'),
-        getMenuItem('Конструктор меню', 'counstructor'),
-        getMenuItem('Архив меню', 'archive')
+        getMenuItem('Конструктор меню', 'constructor'),
+        getMenuItem('Архив меню', 'archive'),
+        getMenuItem('Сводка заказов по текущему меню', 'all_orders')
     ];
 
     function openModal(dict) {
@@ -52,7 +59,22 @@ const MainPage = () => {
     }
 
     function handleDishDelete(id) {
-        dispatch(DeleteDish(id))
+        dispatch(DeleteDish(id));
+    }
+
+    function handleDishUpdate(id) {
+        setTypeOFModalAction("update");
+        setCurrentIdOfUpdatedRecord(id);
+        form.setFields(
+            Object.entries(state.allDishes.data.find(x => x.id === id))
+                .map(x => ({name: x[0], value: x[0] !== 'typeOfDishId' ? x[1] : state.dicts.typesOfDish.data.find(dictEl => dictEl.id === x[1]).description}))
+        )
+        setIsCreateDishModalOpen(true);
+    }
+
+    function handleDishCreate(){
+        setTypeOFModalAction("create");
+        setIsCreateDishModalOpen(true);
     }
 
     const columnsTypeOfFoodIntake = [
@@ -146,7 +168,7 @@ const MainPage = () => {
             dataIndex: 'typeOfDishId',
             key: 'typeOfDish',
             render: (itemData, record) => {
-                return <span>{state.dicts.typesOfDish.data.find(x => record.typeOfDishId === x.id).description}</span>
+                return <span>{!!state.dicts.typesOfDish.data.length && state.dicts.typesOfDish.data.find(x => record.typeOfDishId === x.id).description}</span>
             }
         },
         {
@@ -154,19 +176,24 @@ const MainPage = () => {
             dataIndex: 'actions',
             key: 'actions',
             render: (itemData, record) => {
-                return <Button onClick={() => handleDishDelete(record.id)} type='link' size='small'>Удалить</Button>
+                return <div className={style.tableActionButtonsContainer}>
+                    <Button onClick={() => handleDishUpdate(record.id)} type='link' size='small'>Изменить</Button>
+                    <Button onClick={() => handleDishDelete(record.id)} type='link' size='small'>Удалить</Button>
+                </div>
             }
         }
     ];
 
-    function renderCentralContent(type) {
-        if (type === 'all_dishes') {
+    const renderCentralContent = useMemo(() => {
+        if (selectedMenuItem === 'all_dishes') {
             return <>
-                <Button onClick={() => setIsCreateDishModalOpen(true)} className={style.dictAddBtn} size='small'>Добавить блюдо</Button>
-                <Table pagination={{defaultPageSize: 18, pageSize: 18}} dataSource={state.allDishes.data} size='small' columns={columnsAllDishes}/>
+                <Button onClick={handleDishCreate} className={style.dictAddBtn} size='small'>Добавить блюдо</Button>
+                <Table loading={state.allDishes.loading} pagination={{defaultPageSize: 18, pageSize: 18}} dataSource={state.allDishes.data} size='small' columns={columnsAllDishes}/>
             </>
+        } else if (selectedMenuItem === 'constructor') {
+            return <CalendarComponent/>
         }
-    }
+    }, [columnsAllDishes, state.allDishes.data, state.allDishes.loading]);
 
     function mapTypesOfDishToModal(typesOfDish) {
         return typesOfDish.map(x => ({value: x.description}));
@@ -180,7 +207,7 @@ const MainPage = () => {
                         <Menu style={{borderInlineEnd: 0}} defaultSelectedKeys='all_dishes' onSelect={(e) => handleMenuItemClick(e)} items={items}/>
                     </div>
                     <div className={style.gridItem + ' ' + style.gridItem2}>
-                        {renderCentralContent(selectedMenuItem)}
+                        {renderCentralContent}
                     </div>
                     <div className={style.gridItem + ' ' + style.gridItem3}>
                         <div className={style.dictItem}>
@@ -196,10 +223,15 @@ const MainPage = () => {
                     </div>
                 </div>
                 <AddDictRecordModal typeOfDict={typeOfDict} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
-                <AddDishModal typeOfDish={state.dicts.typesOfDish.data} typesOfDishMapped={mapTypesOfDishToModal(state.dicts.typesOfDish.data)} isModalOpen={isCreateDishModalOpen} setIsModalOpen={setIsCreateDishModalOpen}/>
+                <AddDishModal
+                    typeOfModalAction={typeOfModalAction}
+                    currentIdOfUpdatedRecord={currentIdOfUpdatedRecord}
+                    form={form}
+                    typeOfDish={state.dicts.typesOfDish.data}
+                    typesOfDishMapped={!!state.dicts.typesOfDish.data && mapTypesOfDishToModal(state.dicts.typesOfDish.data)} isModalOpen={isCreateDishModalOpen} setIsModalOpen={setIsCreateDishModalOpen}/>
             </> : <div>Не авторизован</div>}
         </div>
     )
 }
 
-export default MainPage;
+export default React.memo(MainPage);
