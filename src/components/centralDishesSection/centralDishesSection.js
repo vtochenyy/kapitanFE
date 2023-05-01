@@ -1,5 +1,5 @@
-import { Button, Table } from 'antd';
-import style from '../../pages/main/style.module.css';
+import { Button, Table, Tag } from 'antd';
+import style from './style.module.css';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DeleteDish } from '../../redux/actions/admin/AdminActions';
@@ -74,6 +74,26 @@ const CentralDishesSection = ({
             title: 'Диета',
             dataIndex: 'dieta',
             key: 'dieta',
+            render: (itemData, record) => {
+                if (!!record.dieta) {
+                    return (
+                        <div className={style.dietaTagsContainer}>
+                            {record.dieta.map((x, i) => (
+                                <Tag
+                                    key={x + i}
+                                    onClose={(e) => {
+                                        e.preventDefault();
+                                    }}
+                                >
+                                    {x}
+                                </Tag>
+                            ))}
+                        </div>
+                    );
+                } else {
+                    return <span>-</span>;
+                }
+            },
         },
         {
             title: 'Для детей',
