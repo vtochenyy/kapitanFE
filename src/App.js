@@ -1,15 +1,14 @@
-import React, {useEffect} from "react";
-import {Route, Routes, useNavigate} from "react-router-dom";
-import Login from "./pages/login/Login";
+import React, { useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import Login from './pages/login/Login';
 import './App.css';
-import MainPage from "./pages/main/Main";
+import MainPage from './pages/main/Main';
 
 function App() {
     const navigate = useNavigate();
     useEffect(() => {
-        if (sessionStorage.getItem('isAuth') === 'true')
-            navigate('/main');
-    })
+        if (sessionStorage.getItem('isAuth') === 'true') navigate('/main');
+    }, []);
 
     return (
         <div className="App">
@@ -18,7 +17,7 @@ function App() {
                     path="/"
                     element={
                         <React.Suspense fallback={<>...</>}>
-                            <Login/>
+                            <Login />
                         </React.Suspense>
                     }
                 />
@@ -26,7 +25,7 @@ function App() {
                     path="/main"
                     element={
                         <React.Suspense fallback={<>...</>}>
-                            <MainPage/>
+                            <MainPage />
                         </React.Suspense>
                     }
                 />
