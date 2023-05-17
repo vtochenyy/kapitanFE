@@ -10,6 +10,7 @@ import {
     SET_AUTH,
     SET_DICT_TYPE_OF_DISH,
     SET_DICT_TYPE_OF_FOOD_INTAKE,
+    SET_SELECTED_GLOBAL_MENU,
     SET_USER_DATA,
 } from '../../actionTypes/dish/actionTypes';
 import SimpleRequest from '../../../common/generateRequest';
@@ -187,6 +188,30 @@ export const GetAllGlobalMenus = () => {
                         dispatch({
                             type: SET_ARCHIVE_DATA,
                             payload: data.data.map((x, i) => ({ ...x, key: i })),
+                        });
+                    },
+                }),
+            ]);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+};
+
+export const GetGlobalMenuById = (id) => {
+    return async (dispatch) => {
+        try {
+            await Promise.all([
+                SimpleRequest({
+                    preCallBack: () => {
+                        dispatch({ type: ACTIVATE_ARCHIVE_LOADING });
+                    },
+                    url: `/menu/getGlobalMenuById?globalMenuId=${id}`,
+                    req_cfg: { method: 'GET' },
+                    postCallBack: (data) => {
+                        dispatch({
+                            type: SET_SELECTED_GLOBAL_MENU,
+                            payload: data.data,
                         });
                     },
                 }),

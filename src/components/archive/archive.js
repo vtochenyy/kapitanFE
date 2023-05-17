@@ -1,20 +1,71 @@
 import style from './style.module.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetAllGlobalMenus } from '../../redux/actions/admin/AdminActions';
-import { Button, Table } from 'antd';
+import { GetAllGlobalMenus, GetGlobalMenuById } from '../../redux/actions/admin/AdminActions';
+import { Button, Collapse, Table } from 'antd';
 
 const Archive = () => {
     const [isTargetMenuSelected, setIsTargetMenuSelected] = useState(false);
     const dispatch = useDispatch();
     const state = useSelector((store) => store.app);
+    const { Panel } = Collapse;
+    const [foodIntakesGroopConstrucor, setFoodIntakesGroopConstrucor] = useState([]);
     useEffect(() => {
         dispatch(GetAllGlobalMenus());
-    }, []);
+        setFoodIntakesGroopConstrucor(
+            state.dicts.typesOfFoodIntake.data.map((x) => ({
+                typeOfFoodIntakeItemId: x.id,
+                dishes:
+                    state?.archive?.selectedGlobalMenu?.menu?.typeOfFoodIntakeItems?.filter(
+                        (x) => x.typeOfFoodIntakeItemId === x.id
+                    )?.dishes ?? [],
+            }))
+        );
+    }, [state.dicts.typesOfFoodIntake.data, isTargetMenuSelected]);
 
-    function handleGlobalMenuSelect() {
+    function handleGlobalMenuSelect(record) {
+        dispatch(GetGlobalMenuById(record.id));
         setIsTargetMenuSelected(true);
     }
+
+    const updateFoodIntakesGroopConstrucor = useMemo(() => {
+        isTargetMenuSelected &&
+            console.log(
+                state.archive.selectedGlobalMenu.menu.typeOfFoodIntakeItems.find(
+                    (y) => y.typeOfFoodIntakeId === '19662880-e477-11ed-95a2-23e8d226cad0'
+                ),
+                '****************88'
+            );
+        isTargetMenuSelected &&
+            setFoodIntakesGroopConstrucor(
+                state.dicts.typesOfFoodIntake.data.map((x) => ({
+                    typeOfFoodIntakeItemId: x.id,
+                    dishes: state.archive.selectedGlobalMenu.menu.typeOfFoodIntakeItems
+                        .find((y) => y.typeOfFoodIntakeId === x.id)
+                        .typeOfDishItems.flatMap((y) => y.dishes.map((z) => z.id)),
+                }))
+            );
+    }, [state.archive.selectedGlobalMenu]);
+
+    const renderPanels = useMemo(() => {
+        return state?.dicts?.typesOfFoodIntake?.data?.map((x, i) => {
+            return (
+                <Panel header={x.description} key={i + 1}>
+                    {foodIntakesGroopConstrucor
+                        .find((y) => y.typeOfFoodIntakeItemId === x.id)
+                        ?.dishes.map((y) => state.allDishes.data.find((z) => z.id === y)).length >
+                    0 ? (
+                        foodIntakesGroopConstrucor
+                            .find((y) => y.typeOfFoodIntakeItemId === x.id)
+                            ?.dishes.map((y) => state.allDishes.data.find((z) => z.id === y))
+                            .map((y, index) => <span key={index}>{y.name} ; </span>)
+                    ) : (
+                        <span>Блюда ещё не добавлены</span>
+                    )}
+                </Panel>
+            );
+        });
+    }, [foodIntakesGroopConstrucor, state?.dicts?.typesOfFoodIntake?.data]);
 
     const tableColumns = [
         {
@@ -22,7 +73,6 @@ const Archive = () => {
             dataIndex: 'targetDate',
             key: 'targetDate',
             render: (itemData, record) => {
-                console.log(record);
                 return <span>{new Date(record.targetDate).toLocaleDateString()}</span>;
             },
         },
@@ -32,9 +82,8 @@ const Archive = () => {
             key: 'actions',
             width: 100,
             render: (itemData, record) => {
-                console.log(record);
                 return (
-                    <Button onClick={handleGlobalMenuSelect} type="link" size="small">
+                    <Button onClick={() => handleGlobalMenuSelect(record)} type="link" size="small">
                         Перейти
                     </Button>
                 );
@@ -49,7 +98,7 @@ const Archive = () => {
                     <div className={style.menuArchiveHeader}>Архив меню</div>
                     <Table
                         loading={state.archive.loading}
-                        pagination={{ defaultPageSize: 17, pageSize: 8 }}
+                        pagination={{ defaultPageSize: 17, pageSize: 17 }}
                         dataSource={state.archive.data}
                         size="small"
                         columns={tableColumns}
@@ -57,7 +106,13 @@ const Archive = () => {
                 </>
             ) : (
                 <>
-                    <div className={style.menuArchiveHeader}>Выбранное меню: </div>
+                    <div className={style.menuArchiveHeader}>
+                        Выбранное меню:{' '}
+                        {new Date(
+                            state.archive.selectedGlobalMenu?.menu?.targetDate
+                        ).toLocaleDateString()}
+                    </div>
+                    <Collapse defaultActiveKey={['1']}>{renderPanels}</Collapse>
                 </>
             )}
         </div>

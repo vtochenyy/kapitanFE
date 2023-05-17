@@ -24,7 +24,7 @@ const AddDishModal = ({
 
     useEffect(() => {
         setIsChecked(form.getFieldValue('isForKids'));
-        setTags(form.getFieldValue('dieta'));
+        setTags(form.getFieldValue('dieta') ?? []);
     }, [form, isModalOpen]);
 
     useEffect(() => {
@@ -52,6 +52,8 @@ const AddDishModal = ({
     };
 
     function handleSubmit(params) {
+        console.log(tags);
+        console.log(params);
         if (typeOfModalAction === 'create') {
             dispatch(
                 CreateDish({
@@ -68,6 +70,7 @@ const AddDishModal = ({
                     typeOfDishId: typeOfDish.find((x) => x.description === params.typeOfDishId).id,
                     isForKids: isChecked,
                     id: currentIdOfUpdatedRecord,
+                    dieta: tags,
                 })
             );
         }

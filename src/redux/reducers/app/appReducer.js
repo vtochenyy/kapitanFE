@@ -11,6 +11,7 @@ import {
     SET_AUTH,
     ACTIVATE_ARCHIVE_LOADING,
     SET_ARCHIVE_DATA,
+    SET_SELECTED_GLOBAL_MENU,
 } from '../../actionTypes/dish/actionTypes';
 
 let initialState = {
@@ -35,6 +36,7 @@ let initialState = {
     archive: {
         loading: false,
         data: [],
+        selectedGlobalMenu: {},
     },
 };
 
@@ -83,6 +85,10 @@ const appReducer = (state = initialState, { type, payload }) => {
             return newState;
         case SET_AUTH:
             newState.isAuth = true;
+            newState.error = false;
+            return newState;
+        case SET_SELECTED_GLOBAL_MENU:
+            newState.archive.selectedGlobalMenu = payload;
             newState.error = false;
             return newState;
         case ERROR:
