@@ -59,7 +59,7 @@ const AddDishModal = ({
                 CreateDish({
                     ...params,
                     typeOfDishId: typeOfDish.find((x) => x.description === params.typeOfDishId).id,
-                    isForKids: isChecked,
+                    isForKids: !!isChecked,
                     dieta: tags,
                 })
             );
@@ -68,7 +68,7 @@ const AddDishModal = ({
                 UpdateDish({
                     ...params,
                     typeOfDishId: typeOfDish.find((x) => x.description === params.typeOfDishId).id,
-                    isForKids: isChecked,
+                    isForKids: !!isChecked,
                     id: currentIdOfUpdatedRecord,
                     dieta: tags,
                 })
