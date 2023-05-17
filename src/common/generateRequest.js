@@ -1,11 +1,14 @@
-import axios from "axios";
+import axios from 'axios';
+import { HOST } from './BE_API';
 
-async function SimpleRequest({url, req_cfg, redux_cfg, preCallBack, postCallBack}) {
+async function SimpleRequest({ url, req_cfg, redux_cfg, preCallBack, postCallBack }) {
     try {
         if (!!url && !req_cfg) {
             preCallBack && preCallBack();
             const data = await sendRequest({
-                url: url, method: "get", ...req_cfg,
+                url: HOST + url,
+                method: 'get',
+                ...req_cfg,
             });
             if (data.data.statusCode >= 400) {
                 throw new Error(data.data);
@@ -16,7 +19,7 @@ async function SimpleRequest({url, req_cfg, redux_cfg, preCallBack, postCallBack
             }
         } else if (!!url && !!req_cfg) {
             preCallBack && preCallBack();
-            const data = await sendRequest({url: url, ...req_cfg});
+            const data = await sendRequest({ url: HOST + url, ...req_cfg });
             if (data.data.statusCode >= 400) {
                 throw new Error(data.data);
             } else {
@@ -32,7 +35,7 @@ async function SimpleRequest({url, req_cfg, redux_cfg, preCallBack, postCallBack
 }
 
 async function sendRequest(cfg) {
-    return axios({...cfg});
+    return axios({ ...cfg });
 }
 
 export default SimpleRequest;

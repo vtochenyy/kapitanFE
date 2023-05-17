@@ -6,8 +6,12 @@ import {
     SET_DICT_TYPE_OF_DISH,
     ACTIVATE_TYPE_OF_FOOD_INTAKES_LOADING,
     ACTIVATE_TYPE_OF_DISH_LOADING,
-    SET_ALL_DISHES, ACTIVATE_ALL_DISHES_LOADING, SET_AUTH
-} from "../../actionTypes/dish/actionTypes";
+    SET_ALL_DISHES,
+    ACTIVATE_ALL_DISHES_LOADING,
+    SET_AUTH,
+    ACTIVATE_ARCHIVE_LOADING,
+    SET_ARCHIVE_DATA,
+} from '../../actionTypes/dish/actionTypes';
 
 let initialState = {
     isAuth: false,
@@ -16,22 +20,26 @@ let initialState = {
     dicts: {
         typesOfDish: {
             loading: false,
-            data: []
+            data: [],
         },
         typesOfFoodIntake: {
             loading: false,
-            data: []
-        }
+            data: [],
+        },
     },
     allDishes: {
         loading: false,
-        data: []
+        data: [],
     },
-    user: {}
-}
+    user: {},
+    archive: {
+        loading: false,
+        data: [],
+    },
+};
 
-const appReducer = (state = initialState, {type, payload}) => {
-    let newState = {...state};
+const appReducer = (state = initialState, { type, payload }) => {
+    let newState = { ...state };
     switch (type) {
         case ACTIVATE_LOADING:
             newState.loading = true;
@@ -43,7 +51,10 @@ const appReducer = (state = initialState, {type, payload}) => {
             newState.dicts.typesOfDish.loading = true;
             return newState;
         case ACTIVATE_ALL_DISHES_LOADING:
-            newState.allDishes.loading = true;
+            newState.archive.loading = true;
+            return newState;
+        case ACTIVATE_ARCHIVE_LOADING:
+            newState.archive.loading = true;
             return newState;
         case SET_USER_DATA:
             newState.user = payload;
@@ -65,6 +76,11 @@ const appReducer = (state = initialState, {type, payload}) => {
             newState.allDishes.loading = false;
             newState.error = false;
             return newState;
+        case SET_ARCHIVE_DATA:
+            newState.archive.data = payload;
+            newState.archive.loading = false;
+            newState.error = false;
+            return newState;
         case SET_AUTH:
             newState.isAuth = true;
             newState.error = false;
@@ -76,6 +92,6 @@ const appReducer = (state = initialState, {type, payload}) => {
         default:
             return newState;
     }
-}
+};
 
 export default appReducer;

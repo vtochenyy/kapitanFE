@@ -11,6 +11,7 @@ import { useForm } from 'antd/es/form/Form';
 import DictionaryTypeOfDishTable from '../../components/dictionaryTypeOfDishTable/dictionaryTypeOfDishTable';
 import DictionaryTypeOfFoodIntakesTable from '../../components/dictionaryTypeOfFoodIntakesTable/dictionaryTypeOfFoodIntakesTable';
 import CentralDishesSection from '../../components/centralDishesSection/centralDishesSection';
+import Archive from '../../components/archive/archive';
 
 const MainPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,8 +25,7 @@ const MainPage = () => {
     const [form] = useForm();
     useEffect(() => {
         dispatch(GetAllDicts());
-        dispatch(GetAllDishes());
-    }, [dispatch]);
+    }, []);
 
     function getMenuItem(label, key, icon, children, type) {
         return {
@@ -67,8 +67,10 @@ const MainPage = () => {
             );
         } else if (selectedMenuItem === 'constructor') {
             return <CalendarComponent />;
+        } else if (selectedMenuItem === 'archive') {
+            return <Archive />;
         }
-    }, [state.allDishes.data, state.allDishes.loading]);
+    }, [state.allDishes.data, state.allDishes.loading, selectedMenuItem]);
 
     function mapTypesOfDishToModal(typesOfDish) {
         return typesOfDish.map((x) => ({ value: x.description }));

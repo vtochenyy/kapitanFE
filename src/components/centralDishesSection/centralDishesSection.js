@@ -1,8 +1,8 @@
 import { Button, Table, Tag } from 'antd';
 import style from './style.module.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { DeleteDish } from '../../redux/actions/admin/AdminActions';
+import { DeleteDish, GetAllDicts, GetAllDishes } from '../../redux/actions/admin/AdminActions';
 
 const CentralDishesSection = ({
     setTypeOFModalAction,
@@ -10,6 +10,9 @@ const CentralDishesSection = ({
     setCurrentIdOfUpdatedRecord,
     form,
 }) => {
+    useEffect(() => {
+        dispatch(GetAllDishes());
+    }, []);
     const dispatch = useDispatch();
     const state = useSelector((store) => store.app);
 
