@@ -30,19 +30,12 @@ const Archive = () => {
 
     const updateFoodIntakesGroopConstrucor = useMemo(() => {
         isTargetMenuSelected &&
-            console.log(
-                state.archive.selectedGlobalMenu.menu.typeOfFoodIntakeItems.find(
-                    (y) => y.typeOfFoodIntakeId === '19662880-e477-11ed-95a2-23e8d226cad0'
-                ),
-                '****************88'
-            );
-        isTargetMenuSelected &&
             setFoodIntakesGroopConstrucor(
                 state.dicts.typesOfFoodIntake.data.map((x) => ({
                     typeOfFoodIntakeItemId: x.id,
                     dishes: state.archive.selectedGlobalMenu.menu.typeOfFoodIntakeItems
                         .find((y) => y.typeOfFoodIntakeId === x.id)
-                        .typeOfDishItems.flatMap((y) => y.dishes.map((z) => z.id)),
+                        ?.typeOfDishItems?.flatMap((y) => y?.dishes?.map((z) => z?.id)),
                 }))
             );
     }, [state.archive.selectedGlobalMenu]);

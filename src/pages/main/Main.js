@@ -12,6 +12,7 @@ import DictionaryTypeOfDishTable from '../../components/dictionaryTypeOfDishTabl
 import DictionaryTypeOfFoodIntakesTable from '../../components/dictionaryTypeOfFoodIntakesTable/dictionaryTypeOfFoodIntakesTable';
 import CentralDishesSection from '../../components/centralDishesSection/centralDishesSection';
 import Archive from '../../components/archive/archive';
+import Smeta from '../../components/smeta/smeta';
 
 const MainPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -69,6 +70,8 @@ const MainPage = () => {
             return <CalendarComponent />;
         } else if (selectedMenuItem === 'archive') {
             return <Archive />;
+        } else {
+            return <Smeta />;
         }
     }, [state.allDishes.data, state.allDishes.loading, selectedMenuItem]);
 
