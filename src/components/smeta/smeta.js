@@ -1,5 +1,5 @@
 import style from './style.module.css';
-import { Collapse } from 'antd';
+import { Collapse, Spin } from 'antd';
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetSmetaByGlobalMenuID } from '../../redux/actions/admin/AdminActions';
@@ -17,7 +17,7 @@ const Smeta = ({ id }) => {
             let result = state.smeta.data.map((x, i) => {
                 return (
                     <div key={i} className={style.smetaGridContainer__item}>
-                        <p>Стол #{x.tableNumber}</p>
+                        <p>Стол №{x.tableNumber}</p>
                         <div>
                             <Collapse>
                                 {x.smeta.map((y, y_index) => {
@@ -50,7 +50,7 @@ const Smeta = ({ id }) => {
                                                                                 j1.name
                                                                             }
                                                                         >
-                                                                            {j1.name}
+                                                                            {j1.name + '; '}
                                                                         </span>
                                                                     );
                                                                 })}
@@ -78,7 +78,13 @@ const Smeta = ({ id }) => {
 
     return (
         <div>
-            <div className={style.smetaGridContainer}>{renderSmeta}</div>
+            {!state.smeta.loading ? (
+                <div className={style.smetaGridContainer}>{renderSmeta}</div>
+            ) : (
+                <div className={style.spinnerContainer}>
+                    <Spin />
+                </div>
+            )}
         </div>
     );
 };
