@@ -12,6 +12,8 @@ import {
     ACTIVATE_ARCHIVE_LOADING,
     SET_ARCHIVE_DATA,
     SET_SELECTED_GLOBAL_MENU,
+    ACTIVATE_SMETA_LOADING,
+    SET_SMETA,
 } from '../../actionTypes/dish/actionTypes';
 
 let initialState = {
@@ -38,6 +40,10 @@ let initialState = {
         data: [],
         selectedGlobalMenu: {},
     },
+    smeta: {
+        data: {},
+        loading: false,
+    },
 };
 
 const appReducer = (state = initialState, { type, payload }) => {
@@ -57,6 +63,9 @@ const appReducer = (state = initialState, { type, payload }) => {
             return newState;
         case ACTIVATE_ARCHIVE_LOADING:
             newState.archive.loading = true;
+            return newState;
+        case ACTIVATE_SMETA_LOADING:
+            newState.smeta.loading = true;
             return newState;
         case SET_USER_DATA:
             newState.user = payload;
@@ -89,6 +98,11 @@ const appReducer = (state = initialState, { type, payload }) => {
             return newState;
         case SET_SELECTED_GLOBAL_MENU:
             newState.archive.selectedGlobalMenu = payload;
+            newState.error = false;
+            return newState;
+        case SET_SMETA:
+            newState.smeta.data = payload;
+            newState.smeta.loading = false;
             newState.error = false;
             return newState;
         case ERROR:

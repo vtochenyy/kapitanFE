@@ -46,7 +46,6 @@ const MainPage = () => {
         getMenuItem('Общий список блюд', 'all_dishes'),
         getMenuItem('Конструктор меню', 'constructor'),
         getMenuItem('Архив меню', 'archive'),
-        getMenuItem('Сводка заказов по текущему меню', 'all_orders'),
     ];
 
     function openModal(dict) {
@@ -70,8 +69,6 @@ const MainPage = () => {
             return <CalendarComponent />;
         } else if (selectedMenuItem === 'archive') {
             return <Archive />;
-        } else {
-            return <Smeta />;
         }
     }, [state.allDishes.data, state.allDishes.loading, selectedMenuItem]);
 

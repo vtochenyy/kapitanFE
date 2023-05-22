@@ -3,6 +3,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import Login from './pages/login/Login';
 import './App.css';
 import MainPage from './pages/main/Main';
+import Smeta from './components/smeta/smeta';
 
 function App() {
     const navigate = useNavigate();

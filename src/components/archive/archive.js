@@ -2,10 +2,12 @@ import style from './style.module.css';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetAllGlobalMenus, GetGlobalMenuById } from '../../redux/actions/admin/AdminActions';
-import { Button, Collapse, Table } from 'antd';
+import { Button, Collapse, Divider, Table } from 'antd';
+import Smeta from '../smeta/smeta';
 
 const Archive = () => {
     const [isTargetMenuSelected, setIsTargetMenuSelected] = useState(false);
+    const [selectedGlobalMenuId, setSelectedGlobalMenuId] = useState('');
     const dispatch = useDispatch();
     const state = useSelector((store) => store.app);
     const { Panel } = Collapse;
@@ -28,7 +30,7 @@ const Archive = () => {
         setIsTargetMenuSelected(true);
     }
 
-    const updateFoodIntakesGroopConstrucor = useMemo(() => {
+    useMemo(() => {
         isTargetMenuSelected &&
             setFoodIntakesGroopConstrucor(
                 state.dicts.typesOfFoodIntake.data.map((x) => ({
@@ -76,7 +78,14 @@ const Archive = () => {
             width: 100,
             render: (itemData, record) => {
                 return (
-                    <Button onClick={() => handleGlobalMenuSelect(record)} type="link" size="small">
+                    <Button
+                        onClick={() => {
+                            setSelectedGlobalMenuId(record.id);
+                            handleGlobalMenuSelect(record);
+                        }}
+                        type="link"
+                        size="small"
+                    >
                         Перейти
                     </Button>
                 );
@@ -106,6 +115,8 @@ const Archive = () => {
                         ).toLocaleDateString()}
                     </div>
                     <Collapse defaultActiveKey={['1']}>{renderPanels}</Collapse>
+                    <Divider>Смета по текущему меню</Divider>
+                    <Smeta id={selectedGlobalMenuId} />
                 </>
             )}
         </div>

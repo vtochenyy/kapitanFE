@@ -2,6 +2,7 @@ import {
     ACTIVATE_ALL_DISHES_LOADING,
     ACTIVATE_ARCHIVE_LOADING,
     ACTIVATE_LOADING,
+    ACTIVATE_SMETA_LOADING,
     ACTIVATE_TYPE_OF_DISH_LOADING,
     ACTIVATE_TYPE_OF_FOOD_INTAKES_LOADING,
     ERROR,
@@ -11,6 +12,7 @@ import {
     SET_DICT_TYPE_OF_DISH,
     SET_DICT_TYPE_OF_FOOD_INTAKE,
     SET_SELECTED_GLOBAL_MENU,
+    SET_SMETA,
     SET_USER_DATA,
 } from '../../actionTypes/dish/actionTypes';
 import SimpleRequest from '../../../common/generateRequest';
@@ -213,6 +215,37 @@ export const GetGlobalMenuById = (id) => {
                             type: SET_SELECTED_GLOBAL_MENU,
                             payload: data.data,
                         });
+                    },
+                }),
+            ]);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+};
+
+export const GetSmetaByGlobalMenuID = (id) => {
+    return async (dispatch) => {
+        try {
+            await Promise.all([
+                SimpleRequest({
+                    preCallBack: () => {
+                        dispatch({ type: ACTIVATE_SMETA_LOADING });
+                    },
+                    url: `/menu/getSmetaByGlobalMenuId?globalMenuId=${id}`,
+                    req_cfg: { method: 'GET' },
+                    postCallBack: (data) => {
+                        dispatch({
+                            type: SET_SMETA,
+                            payload: data.data,
+                        });
+                        if (data.status > 400) {
+                            notification.success({
+                                placement: 'topRight',
+                                message: 'Уведомление',
+                                description: 'Запись добавлена!',
+                            });
+                        }
                     },
                 }),
             ]);
