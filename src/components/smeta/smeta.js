@@ -75,7 +75,7 @@ const Smeta = ({ id }) => {
                     <div className={style.smetaNotExistContainer}>
                         <Alert
                             message="Внимание"
-                            description="По этому меню ещё не составлена смета"
+                            description="По этому меню ещё не составлена смета."
                             type="warning"
                             showIcon
                         />
@@ -111,7 +111,7 @@ const Smeta = ({ id }) => {
                     <div className={style.smetaNotExistContainer}>
                         <Alert
                             message="Внимание"
-                            description="По этому меню ещё нет сводки заказанных блюд"
+                            description="По этому меню ещё нет сводки заказанных блюд."
                             type="warning"
                             showIcon
                         />

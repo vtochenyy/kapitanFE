@@ -27,6 +27,9 @@ const Archive = () => {
 
     function handleGlobalMenuSelect(record) {
         dispatch(GetGlobalMenuById(record.id));
+        setTimeout(() => {
+            dispatch(GetGlobalMenuById(record.id));
+        }, 3000);
         setIsTargetMenuSelected(true);
     }
 
