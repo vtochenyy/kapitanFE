@@ -9,6 +9,10 @@
     grid-template-columns: repeat(3, 1fr);
 }
 
+.smetaNotExistContainer{
+    grid-column: 1/4;
+}
+
 .smetaGridContainer__item {
     border-radius: 10px;
     padding: 10px;
@@ -19,4 +23,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.colorizedTableNum{
+    color: #1677ff;
+    font-weight: bold;
+}
+
+.tableTitle{
+    text-align: center;
+}
+
+.dishSmetaContianer{}
+
+.dishSmetaEl{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #adadad;
 }

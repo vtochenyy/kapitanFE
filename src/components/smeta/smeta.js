@@ -1,5 +1,5 @@
 import style from './style.module.css';
-import { Collapse, Spin } from 'antd';
+import { Alert, Button, Collapse, Divider, Spin } from 'antd';
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetSmetaByGlobalMenuID } from '../../redux/actions/admin/AdminActions';
@@ -14,10 +14,12 @@ const Smeta = ({ id }) => {
 
     const renderSmeta = useMemo(() => {
         try {
-            let result = state.smeta.data.map((x, i) => {
+            let result = state.smeta.data.allMenus.map((x, i) => {
                 return (
                     <div key={i} className={style.smetaGridContainer__item}>
-                        <p>Стол №{x.tableNumber}</p>
+                        <p className={style.tableTitle}>
+                            Стол <span className={style.colorizedTableNum}>№{x.tableNumber}</span>
+                        </p>
                         <div>
                             <Collapse>
                                 {x.smeta.map((y, y_index) => {
@@ -69,17 +71,73 @@ const Smeta = ({ id }) => {
             if (!!result.length) {
                 return result;
             } else {
-                return <span>По этому меню ещё не составлена смета</span>;
+                return (
+                    <div className={style.smetaNotExistContainer}>
+                        <Alert
+                            message="Внимание"
+                            description="По этому меню ещё не составлена смета"
+                            type="warning"
+                            showIcon
+                        />
+                    </div>
+                );
             }
         } catch (e) {
-            return <div>error</div>;
+            return (
+                <Alert
+                    message="Ошибка"
+                    description="Ошибка отрисовки компонента."
+                    type="error"
+                    showIcon
+                />
+            );
+        }
+    }, [state.smeta.data, id]);
+
+    const renderSmetaDishData = useMemo(() => {
+        try {
+            let result = state.smeta.data?.dishCountToSmeta?.map((x) => {
+                return (
+                    <div className={style.dishSmetaEl}>
+                        <div>{state.allDishes.data.find((y) => y.id === x.dishId).name}</div>
+                        <div className={style.colorizedTableNum}>{x.count}</div>
+                    </div>
+                );
+            });
+            if (!!result.length) {
+                return result;
+            } else {
+                return (
+                    <div className={style.smetaNotExistContainer}>
+                        <Alert
+                            message="Внимание"
+                            description="По этому меню ещё нет сводки заказанных блюд"
+                            type="warning"
+                            showIcon
+                        />
+                    </div>
+                );
+            }
+        } catch (e) {
+            return (
+                <Alert
+                    message="Ошибка"
+                    description="Ошибка отрисовки компонента."
+                    type="error"
+                    showIcon
+                />
+            );
         }
     }, [state.smeta.data, id]);
 
     return (
         <div>
             {!state.smeta.loading ? (
-                <div className={style.smetaGridContainer}>{renderSmeta}</div>
+                <>
+                    <div className={style.smetaGridContainer}>{renderSmeta}</div>
+                    <Divider>Сводка заказанных блюд</Divider>
+                    <div className={style.dishSmetaContianer}>{renderSmetaDishData}</div>
+                </>
             ) : (
                 <div className={style.spinnerContainer}>
                     <Spin />

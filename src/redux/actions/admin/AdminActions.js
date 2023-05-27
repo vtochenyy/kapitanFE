@@ -300,7 +300,6 @@ export const DeleteTypeOfFoodIntake = (id) => {
                             description: 'Запись удалена!',
                         });
                     } else {
-                        console.log(data);
                         notification.error({
                             placement: 'topRight',
                             message: 'Уведомление',
@@ -312,6 +311,7 @@ export const DeleteTypeOfFoodIntake = (id) => {
             });
             dispatch(GetAllDicts());
         } catch (e) {
+            dispatch(GetAllDicts());
             console.error(e);
         }
     };
@@ -331,7 +331,6 @@ export const DeleteTypeOfDish = (id) => {
                             description: 'Запись удалена!',
                         });
                     } else {
-                        console.log(data);
                         notification.error({
                             placement: 'topRight',
                             message: 'Уведомление',
@@ -343,6 +342,7 @@ export const DeleteTypeOfDish = (id) => {
             });
             dispatch(GetAllDicts());
         } catch (e) {
+            dispatch(GetAllDicts());
             console.error(e);
         }
     };
