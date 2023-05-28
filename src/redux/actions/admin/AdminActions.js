@@ -379,6 +379,30 @@ export const CreateDish = (params) => {
     };
 };
 
+export const AddDishToUserMenuByAdmin = (params, globalMenuId) => {
+    return async (dispatch) => {
+        try {
+            await SimpleRequest({
+                url: '/menu/addDishesToUserMenuByAdmin',
+                preCallBack: () => dispatch({ type: ACTIVATE_SMETA_LOADING }),
+                postCallBack: (data) => {
+                    if (data.status < 400) {
+                        notification.success({
+                            placement: 'topRight',
+                            message: 'Уведомление',
+                            description: 'Блюда добавлены в меню пользователя!',
+                        });
+                    }
+                    dispatch(GetSmetaByGlobalMenuID(globalMenuId));
+                },
+                req_cfg: { method: 'POST', data: params },
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    };
+};
+
 export const DeleteDish = (id) => {
     return async (dispatch) => {
         try {

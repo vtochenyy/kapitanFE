@@ -11,6 +11,7 @@
 
 .smetaNotExistContainer{
     grid-column: 1/4;
+    width: 100%;
 }
 
 .smetaGridContainer__item {

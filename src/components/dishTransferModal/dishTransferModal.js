@@ -6,6 +6,7 @@ const DishTransferModal = ({
     dataSourceTool,
     targetKeysTool,
     onTransferChange,
+    onFinish,
 }) => {
     return (
         <Modal
@@ -31,6 +32,7 @@ const DishTransferModal = ({
                             dataSourceTool.setDataSource([]);
                             targetKeysTool.setTargetKeys([]);
                             isModalOpenTool.setIsDishTransferModalOpen(false);
+                            onFinish();
                         }}
                         type="primary"
                     >

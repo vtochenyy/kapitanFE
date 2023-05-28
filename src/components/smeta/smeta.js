@@ -2,7 +2,10 @@ import style from './style.module.css';
 import { Alert, Button, Collapse, Divider, Spin } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetSmetaByGlobalMenuID } from '../../redux/actions/admin/AdminActions';
+import {
+    AddDishToUserMenuByAdmin,
+    GetSmetaByGlobalMenuID,
+} from '../../redux/actions/admin/AdminActions';
 import { EditOutlined } from '@ant-design/icons';
 import DishTransferModal from '../dishTransferModal/dishTransferModal';
 
@@ -13,10 +16,59 @@ const Smeta = ({ id }) => {
     const [isDishTransferModalOpen, setIsDishTransferModalOpen] = useState(false);
     const [dataSource, setDataSource] = useState([]);
     const [targetKeys, setTargetKeys] = useState([]);
+    const [stepAddDishToUserFoodIntakeData, setStepAddDishToUserFoodIntakeData] = useState({});
 
     useEffect(() => {
         dispatch(GetSmetaByGlobalMenuID(id));
     }, []);
+
+    const calculateDataSource = (foodIntakeId, alredyExistsDishesNames) => {
+        const allFoodIntakesDishes = state.archive.selectedGlobalMenu.menu.typeOfFoodIntakeItems
+            .find((foodIntakeItem) => foodIntakeItem.typeOfFoodIntakeId === foodIntakeId)
+            .typeOfDishItems.flatMap((typeOfDishItem) => typeOfDishItem.dishes)
+            .map((dish) => ({
+                key: dish.id,
+                title: dish.name,
+            }));
+        const allExistsDishesInFoodIntake = alredyExistsDishesNames.map((x) => ({
+            key: x.id,
+            title: x.name,
+        }));
+        setDataSource(
+            allFoodIntakesDishes.filter(
+                (x) => !allExistsDishesInFoodIntake.find((y) => y.title === x.title)
+            )
+        );
+    };
+
+    const handleTransferFinish = () => {
+        console.log(stepAddDishToUserFoodIntakeData);
+        console.log({
+            data: targetKeys.map((targetKey) => ({
+                dishId: targetKey,
+                ...stepAddDishToUserFoodIntakeData,
+            })),
+            globalMenuId: id,
+            tableId: stepAddDishToUserFoodIntakeData.tableId,
+            typeOfFoodIntakeId: stepAddDishToUserFoodIntakeData.typeOfFoodIntakeId,
+            placeNumber: stepAddDishToUserFoodIntakeData.placeNumber,
+        });
+        dispatch(
+            AddDishToUserMenuByAdmin(
+                {
+                    data: targetKeys.map((targetKey) => ({
+                        dishId: targetKey,
+                        ...stepAddDishToUserFoodIntakeData,
+                    })),
+                    globalMenuId: id,
+                    tableId: stepAddDishToUserFoodIntakeData.tableId,
+                    typeOfFoodIntakeId: stepAddDishToUserFoodIntakeData.typeOfFoodIntakeId,
+                    placeNumber: +stepAddDishToUserFoodIntakeData.placeNumber,
+                },
+                id
+            )
+        );
+    };
 
     const renderSmeta = useMemo(() => {
         try {
@@ -62,74 +114,49 @@ const Smeta = ({ id }) => {
                                                                                 setIsDishTransferModalOpen(
                                                                                     true
                                                                                 );
-                                                                                setDataSource(
-                                                                                    state.archive.selectedGlobalMenu.menu.typeOfFoodIntakeItems
-                                                                                        .find(
-                                                                                            (
-                                                                                                foodIntakeItem
-                                                                                            ) =>
-                                                                                                foodIntakeItem.typeOfFoodIntakeId ===
-                                                                                                z.typeOfFoodIntakeId
-                                                                                        )
-                                                                                        .typeOfDishItems.flatMap(
-                                                                                            (
-                                                                                                typeOfDishItem
-                                                                                            ) =>
-                                                                                                typeOfDishItem.dishes
-                                                                                        )
-                                                                                        .map(
-                                                                                            (
-                                                                                                dish
-                                                                                            ) => ({
-                                                                                                key:
-                                                                                                    dish.id +
-                                                                                                    Math.random(),
-                                                                                                title: dish.name,
-                                                                                            })
-                                                                                        )
-                                                                                        .filter(
-                                                                                            (
-                                                                                                dataSource_el
-                                                                                            ) =>
-                                                                                                z.typeOfDishItems
-                                                                                                    .flatMap(
-                                                                                                        (
-                                                                                                            dishCont
-                                                                                                        ) =>
-                                                                                                            dishCont.dishes
-                                                                                                    )
-                                                                                                    .find(
-                                                                                                        (
-                                                                                                            el
-                                                                                                        ) =>
-                                                                                                            el.name !==
-                                                                                                            dataSource_el.title
-                                                                                                    )
-                                                                                        )
+                                                                                calculateDataSource(
+                                                                                    z.typeOfFoodIntakeId,
+                                                                                    z.typeOfDishItems.flatMap(
+                                                                                        (
+                                                                                            typeOfDishItem
+                                                                                        ) =>
+                                                                                            typeOfDishItem.dishes
+                                                                                    )
                                                                                 );
                                                                                 // setDataSource(
-                                                                                //     z.typeOfDishItems
-                                                                                //         .flatMap(
+                                                                                //     state.archive.selectedGlobalMenu.menu.typeOfFoodIntakeItems
+                                                                                //         .find(
                                                                                 //             (
-                                                                                //                 dishCont
+                                                                                //                 foodIntakeItem
                                                                                 //             ) =>
-                                                                                //                 dishCont.dishes
+                                                                                //                 foodIntakeItem.typeOfFoodIntakeId ===
+                                                                                //                 z.typeOfFoodIntakeId
+                                                                                //         )
+                                                                                //         .typeOfDishItems.flatMap(
+                                                                                //             (
+                                                                                //                 typeOfDishItem
+                                                                                //             ) =>
+                                                                                //                 typeOfDishItem.dishes
                                                                                 //         )
                                                                                 //         .map(
                                                                                 //             (
                                                                                 //                 dish
                                                                                 //             ) => ({
-                                                                                //                 key:
-                                                                                //                     dish.id +
-                                                                                //                     Math.random(),
+                                                                                //                 key: dish.id,
                                                                                 //                 title: dish.name,
-                                                                                //                 tableId:
-                                                                                //                     y.tableId,
-                                                                                //                 placeNumber:
-                                                                                //                     y.placeNumber,
                                                                                 //             })
                                                                                 //         )
                                                                                 // );
+                                                                                setStepAddDishToUserFoodIntakeData(
+                                                                                    {
+                                                                                        placeNumber:
+                                                                                            y.placeNumber,
+                                                                                        tableId:
+                                                                                            y.tableId,
+                                                                                        typeOfFoodIntakeId:
+                                                                                            z.typeOfFoodIntakeId,
+                                                                                    }
+                                                                                );
                                                                             }}
                                                                             type="text"
                                                                             size="small"
@@ -183,12 +210,14 @@ const Smeta = ({ id }) => {
             }
         } catch (e) {
             return (
-                <Alert
-                    message="Ошибка"
-                    description="Ошибка отрисовки компонента."
-                    type="error"
-                    showIcon
-                />
+                <div className={style.smetaNotExistContainer}>
+                    <Alert
+                        message="Ошибка"
+                        description="Ошибка отрисовки компонента. Такие ошибки часто могут быть связаны с недоступностью сервера или его некорректной работой. Обратитесь к админстратору системы."
+                        type="error"
+                        showIcon
+                    />
+                </div>
             );
         }
     }, [state.smeta.data, id]);
@@ -221,7 +250,7 @@ const Smeta = ({ id }) => {
             return (
                 <Alert
                     message="Ошибка"
-                    description="Ошибка отрисовки компонента."
+                    description="Ошибка отрисовки компонента. Такие ошибки часто могут быть связаны с недоступностью сервера или его некорректной работой. Обратитесь к админстратору системы."
                     type="error"
                     showIcon
                 />
@@ -248,9 +277,9 @@ const Smeta = ({ id }) => {
                 isModalOpenTool={{ isDishTransferModalOpen, setIsDishTransferModalOpen }}
                 onTransferChange={(newTargetKeys) => {
                     setTargetKeys(newTargetKeys);
-                    console.log(dataSource);
                     console.log(newTargetKeys);
                 }}
+                onFinish={handleTransferFinish}
             />
         </div>
     );
