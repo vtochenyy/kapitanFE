@@ -1,0 +1,12 @@
+.transfer {
+    width: 100%;
+}
+
+footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+footer > button {
+    margin-left: 10px;
+}
