@@ -11,8 +11,6 @@ export default function exceptionHandler(error) {
         if (error.response) {
             switch (error.response.status) {
                 case 400:
-                    showError(error.response.data.errorText);
-                    break;
                 case 500:
                     showError(error.response.data.errorText);
                     break;

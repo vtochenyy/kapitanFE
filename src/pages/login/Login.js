@@ -1,13 +1,13 @@
 import style from './style.module.css';
-import {Button, Form, Input} from "antd";
-import {useDispatch, useSelector} from "react-redux";
-import {LoginAction} from "../../redux/actions/admin/AdminActions";
-import {useNavigate} from "react-router-dom";
+import { Button, Form, Input } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { LoginAction } from '../../redux/actions/admin/AdminActions';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const adminState = useSelector(store => store.app);
+    const state = useSelector((store) => store.app);
 
     function handleSubmit(data) {
         dispatch(LoginAction(data, navigate));
@@ -15,19 +15,28 @@ const Login = () => {
 
     return (
         <div className={style.loginPageContainer}>
-            <div className={adminState.error ? style.loginCardContainerError : style.loginCardContainer}>
+            <div className={state.error ? style.loginCardContainerError : style.loginCardContainer}>
                 <p className={style.cardTitle}>Консоль админинистратора</p>
                 <Form onFinish={(x) => handleSubmit(x)}>
-                    <Form.Item name='login'>
-                        <Input size='large' placeholder="Имя пользователя"/>
+                    <Form.Item name="login">
+                        <Input size="large" placeholder="Имя пользователя" />
                     </Form.Item>
-                    <Form.Item name='password'>
-                        <Input size='large' placeholder="Пароль"/>
+                    <Form.Item name="password">
+                        <Input type="password" size="large" placeholder="Пароль" />
                     </Form.Item>
-                    <Button loading={adminState.loading} htmlType='submit' type='primary' size='large' className={style.submitBtn}>Войти</Button>
+                    <Button
+                        loading={state.user.loading}
+                        htmlType="submit"
+                        type="primary"
+                        size="large"
+                        className={style.submitBtn}
+                    >
+                        Войти
+                    </Button>
                 </Form>
             </div>
-        </div>)
-}
+        </div>
+    );
+};
 
 export default Login;

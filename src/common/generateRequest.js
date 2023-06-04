@@ -3,23 +3,10 @@ import { HOST } from './BE_API';
 
 async function SimpleRequest({ url, req_cfg, redux_cfg, preCallBack, postCallBack }) {
     try {
-        if (!!url && !req_cfg) {
+        if (!!url) {
             preCallBack && preCallBack();
-            const data = await sendRequest({
-                url: HOST + url,
-                method: 'get',
-                ...req_cfg,
-            });
-            if (data.data.statusCode >= 400) {
-                throw new Error(data.data);
-            } else {
-                redux_cfg && redux_cfg.action.forEach((el) => redux_cfg.dispatch(el(data.data)));
-                postCallBack && postCallBack(data.data);
-                return data;
-            }
-        } else if (!!url && !!req_cfg) {
-            preCallBack && preCallBack();
-            const data = await sendRequest({ url: HOST + url, ...req_cfg });
+            const config = { url: HOST + url, ...req_cfg };
+            const data = await sendRequest(config);
             if (data.data.statusCode >= 400) {
                 throw new Error(data.data);
             } else {
@@ -34,8 +21,8 @@ async function SimpleRequest({ url, req_cfg, redux_cfg, preCallBack, postCallBac
     }
 }
 
-async function sendRequest(cfg) {
-    return axios({ ...cfg });
+async function sendRequest(config) {
+    return axios(config);
 }
 
 export default SimpleRequest;
