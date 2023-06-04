@@ -1,3 +1,31 @@
-.header button{
+.header button {
     color: white;
+}
+
+.header {
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.navContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.userData {
+    margin-left: 50px;
+    padding-left: 10px;
+    line-height: normal;
+    border-left: 2px solid white;
+}
+
+.navContainer {
+    height: 100%;
+}
+
+.selected {
+    color: greenyellow !important;
+    border-bottom: 2px solid greenyellow;
 }

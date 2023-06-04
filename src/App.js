@@ -5,7 +5,11 @@ import Login from './pages/login/Login';
 import './App.css';
 import MainPage from './pages/main/Main';
 import HeaderComponent from './components/header/Header';
+import FooterComponent from './components/footer/Footer';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
+import News from './pages/news/News';
+import NewItemPage from './pages/news/newItemPage/NewItemPage';
+import Contacts from './pages/contacts/Contacts';
 
 function App() {
     const navigate = useNavigate();
@@ -20,7 +24,6 @@ function App() {
         color: '#fff',
         height: '10vh',
         paddingInline: 50,
-        lineHeight: '64px',
         backgroundColor: 'green',
     };
     const contentStyle = {
@@ -28,6 +31,8 @@ function App() {
         height: location.pathname === '/' ? '' : '80vh',
         width: '100%',
         color: 'black',
+        overflowY: 'auto',
+        padding: '20px !important',
     };
     const footerStyle = {
         textAlign: 'center',
@@ -66,7 +71,15 @@ function App() {
                             path="/news"
                             element={
                                 <React.Suspense fallback={<>...</>}>
-                                    <div>news</div>
+                                    <News />
+                                </React.Suspense>
+                            }
+                        />
+                        <Route
+                            path="/news/:id"
+                            element={
+                                <React.Suspense fallback={<>...</>}>
+                                    <NewItemPage />
                                 </React.Suspense>
                             }
                         />
@@ -74,7 +87,7 @@ function App() {
                             path="/contacts"
                             element={
                                 <React.Suspense fallback={<>...</>}>
-                                    <div>contacts</div>
+                                    <Contacts />
                                 </React.Suspense>
                             }
                         />
@@ -110,7 +123,6 @@ function App() {
                                 </React.Suspense>
                             }
                         />
-
                         <Route
                             path="*"
                             element={
@@ -121,7 +133,11 @@ function App() {
                         />
                     </Routes>
                 </Content>
-                {location.pathname !== '/' && <Footer style={footerStyle}>Footer</Footer>}
+                {location.pathname !== '/' && (
+                    <Footer style={footerStyle}>
+                        <FooterComponent />
+                    </Footer>
+                )}
             </Layout>
         </div>
     );

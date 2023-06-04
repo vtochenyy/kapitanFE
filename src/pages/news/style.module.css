@@ -1,0 +1,34 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    width: 100%;
+    padding: 20px;
+}
+
+.newItem {
+    transition: 0.3s linear;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, .27);
+}
+
+.newItem:hover {
+    cursor: pointer;
+    transform: scale(1.02);
+    box-shadow: 0 1px 11px green;
+}
+
+.preview_img {
+    width: 100%;
+    height: auto;
+}
+
+.spinnerContainer {
+    grid-column: 1/5;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
