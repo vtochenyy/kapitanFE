@@ -1,5 +1,5 @@
-import { ACTIVATE_CONTACTS_LOADING, ERROR, SET_CONTACTS_DATA } from '../../actionTypes/actionTypes';
-import SimpleRequest from '../../../common/generateRequest';
+import { ACTIVATE_CONTACTS_LOADING, ERROR, SET_CONTACTS_DATA } from '../actionTypes/actionTypes';
+import SimpleRequest from '../../common/generateRequest';
 
 export const GetContactsAction = () => {
     return async (dispatch) => {

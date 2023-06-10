@@ -1,19 +1,19 @@
-import style from './style.module.css';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import testIMG from '../../../assets/test.jpg';
-import { GetNewByIdAction } from '../../../redux/actions/NewsActions';
 import { HistoryOutlined, UserOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
+import { GetMentionByIdAction } from '../../../redux/actions/MentionsActions';
+import style from './style.module.css';
 
-const NewItemPage = () => {
+const MentionItemPage = () => {
     const dispatch = useDispatch();
     const params = useParams();
-    const targetNewItem = useSelector((store) => store?.app?.news?.target);
-    const loading = useSelector((store) => store?.app?.news?.loading);
+    const targetNewItem = useSelector((store) => store?.app?.mentions?.target);
+    const loading = useSelector((store) => store?.app?.mentions?.loading);
     useEffect(() => {
-        dispatch(GetNewByIdAction(params.id));
+        dispatch(GetMentionByIdAction(params.id));
     }, [params, dispatch]);
     return (
         <div className={style.newItemPageContainer}>
@@ -28,7 +28,7 @@ const NewItemPage = () => {
                             </div>
                             <div>
                                 <UserOutlined />
-                                <span>{targetNewItem?.createdBy}</span>
+                                <span>{`${targetNewItem?.User?.name} ${targetNewItem?.User?.lastname}`}</span>
                             </div>
                         </div>
                     </div>
@@ -48,4 +48,4 @@ const NewItemPage = () => {
     );
 };
 
-export default NewItemPage;
+export default MentionItemPage;

@@ -6,6 +6,25 @@
     padding: 20px;
 }
 
+.searchSection {
+    width: 100%;
+    height: 20vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #003f00;
+}
+
+.search {
+    width: 60vw;
+}
+
+.searchTitle {
+    color: white;
+    margin-right: 20px;
+    text-transform: uppercase;
+}
+
 .newItem {
     transition: 0.3s linear;
     padding: 10px;

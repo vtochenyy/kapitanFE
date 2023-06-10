@@ -1,7 +1,7 @@
 import style from './style.module.css';
 import { Button, Form, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { LoginAction } from '../../redux/actions/admin/UserActions';
+import { LoginAction } from '../../redux/actions/UserActions';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {

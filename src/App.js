@@ -10,6 +10,8 @@ import { Content, Footer, Header } from 'antd/es/layout/layout';
 import News from './pages/news/News';
 import NewItemPage from './pages/news/newItemPage/NewItemPage';
 import Contacts from './pages/contacts/Contacts';
+import Mentions from './pages/mentions/Mentions';
+import MentionItemPage from './pages/mentions/mentionItemPage/MentionItemPage';
 
 function App() {
     const navigate = useNavigate();
@@ -28,7 +30,7 @@ function App() {
     };
     const contentStyle = {
         textAlign: 'center',
-        height: location.pathname === '/' ? '' : '80vh',
+        minHeight: '80vh',
         width: '100%',
         color: 'black',
         overflowY: 'auto',
@@ -95,7 +97,15 @@ function App() {
                             path="/mentions"
                             element={
                                 <React.Suspense fallback={<>...</>}>
-                                    <div>mentions</div>
+                                    <Mentions />
+                                </React.Suspense>
+                            }
+                        />
+                        <Route
+                            path="/mentions/:id"
+                            element={
+                                <React.Suspense fallback={<>...</>}>
+                                    <MentionItemPage />
                                 </React.Suspense>
                             }
                         />

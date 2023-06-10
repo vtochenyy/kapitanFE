@@ -8,6 +8,10 @@ import {
     ACTIVATE_NEWS_LOADING,
     SET_CONTACTS_DATA,
     SET_NEWS_TARGET_DATA,
+    SET_ABOUT_DATA,
+    SET_MENTIONS_DATA,
+    ACTIVATE_MENTIONS_LOADING,
+    SET_MENTIONS_TARGET_DATA,
 } from '../../actionTypes/actionTypes';
 
 let initialState = {
@@ -32,7 +36,8 @@ let initialState = {
     },
     mentions: {
         loading: false,
-        data: {},
+        data: [],
+        target: {},
     },
     photoalbum: {
         loading: false,
@@ -60,6 +65,9 @@ const appReducer = (state = initialState, { type, payload }) => {
         case ACTIVATE_CONTACTS_LOADING:
             newState.contacts.loading = true;
             return newState;
+        case ACTIVATE_MENTIONS_LOADING:
+            newState.mentions.loading = true;
+            return newState;
         case SET_USER_DATA:
             newState.user.data = payload;
             newState.loading = false;
@@ -83,6 +91,19 @@ const appReducer = (state = initialState, { type, payload }) => {
             newState.contacts.data = payload;
             newState.contacts.loading = false;
             newState.error = false;
+            return newState;
+        case SET_ABOUT_DATA:
+            newState.about.data = payload;
+            newState.about.loading = false;
+            newState.error = false;
+            return newState;
+        case SET_MENTIONS_DATA:
+            newState.mentions.data = payload;
+            newState.mentions.loading = false;
+            return newState;
+        case SET_MENTIONS_TARGET_DATA:
+            newState.mentions.target = payload;
+            newState.mentions.loading = false;
             return newState;
         case ERROR:
             newState.error = true;

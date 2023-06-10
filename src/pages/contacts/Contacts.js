@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { GetContactsAction } from '../../redux/actions/admin/ContactsActions';
+import { GetContactsAction } from '../../redux/actions/ContactsActions';
 import { Spin } from 'antd';
 import style from './style.module.css';
 

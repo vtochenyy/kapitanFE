@@ -1,11 +1,17 @@
 import style from './style.module.css';
 import { Button } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { Me } from '../../redux/actions/UserActions';
 
 const Header = () => {
     const location = useLocation();
-    const user = useSelector((state) => state?.app?.user?.data?.data);
+    const user = useSelector((state) => state?.app?.user?.data);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(Me());
+    }, []);
     return (
         <header className={style.header}>
             <nav className={style.navContainer}>

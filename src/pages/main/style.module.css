@@ -1,6 +1,57 @@
 .mainPageContainer {
+    padding: 40px;
     color: black;
-    width: 100vw;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.mainPageContainer h1 {
+    margin-bottom: 50px;
+    border-bottom: 3px solid green;
+    padding-bottom: 10px;
+}
+
+.mainPageContainerBorder{
+    padding: 20px;
+    width: 70vw;
+    box-shadow: 0 1px 11px rgba(0,0,0,.27);
+    border-radius: 10px;
+}
+
+.mainPageContainerBorder img {
+    width: 100%;
+}
+
+.description{
+    padding: 10px;
+    text-align: justify;
+    font-size: 20px;
+    width: 100%;
+}
+
+.mainPageInfoContainer{
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    height: 90vh;
+}
+
+.images{
+    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.preview_img{
+    height: 50vh;
+    width: 100%;
+}
+
+.spinnerContainer{
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
