@@ -1,0 +1,69 @@
+.uploadComponentContainer {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    color: white;
+    position: relative;
+}
+
+.imageContainer {
+    position: relative;
+}
+
+.avaIMG {
+    margin: 0 !important;
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+    position: relative;
+}
+
+.imageContainer:hover::after {
+    background-color: rgba(0, 0, 0, 0.44);
+    color: white;
+    cursor: pointer;
+}
+
+.imageContainer::after {
+    position: absolute;
+    content: 'X';
+    left: 0;
+    top: 0;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    color: transparent;
+    background-color: transparent;
+    border-radius: 100%;
+    z-index: 5;
+    transition: 1s;
+}
+
+#input_register_photo {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+}
+
+.input__file__button {
+    padding: 12px;
+    border: 1px solid #FFA41B;
+    border-radius: 1000px;
+    transition: 0.5s;
+}
+
+.input__file_button_text {
+    transition: 0.5s;
+}
+
+.input__file__button:hover {
+    cursor: pointer;
+    transform: scale(1.05)
+}
+
+.input__file_button_text {
+    color: #FFA41B;
+}

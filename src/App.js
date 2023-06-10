@@ -13,6 +13,7 @@ import Contacts from './pages/contacts/Contacts';
 import Mentions from './pages/mentions/Mentions';
 import MentionItemPage from './pages/mentions/mentionItemPage/MentionItemPage';
 import Teachers from './pages/teachers/Teachers';
+import Admin from './pages/admin/Admin';
 
 function App() {
     const navigate = useNavigate();
@@ -131,6 +132,14 @@ function App() {
                             element={
                                 <React.Suspense fallback={<>...</>}>
                                     <div>conditions</div>
+                                </React.Suspense>
+                            }
+                        />
+                        <Route
+                            path="/admin"
+                            element={
+                                <React.Suspense fallback={<>...</>}>
+                                    <Admin />
                                 </React.Suspense>
                             }
                         />

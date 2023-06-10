@@ -48,14 +48,16 @@
 }
 
 .spinnerContainer {
+    grid-column: 1/5;
     width: 100%;
-    height: 100%;
+    height: 40vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .emptyContainer{
+    grid-column: 1/5;
     width: 100%;
     display: flex;
     justify-content: center;

@@ -27,7 +27,7 @@ const Teachers = () => {
                     onChange={(e) => onSearch(e.target.value)}
                     loading={loading}
                     rootClassName={style.search}
-                    placeholder="Введите ключевое слово или часть слова, например: Ярмарка"
+                    placeholder="Введите фамилию, имя или отчество, например: Петров"
                     allowClear
                     onSearch={onSearch}
                 />

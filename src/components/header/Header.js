@@ -69,6 +69,16 @@ const Header = () => {
                         Условия приёма
                     </Button>
                 </Link>
+                {user.role === 'admin' && (
+                    <Link className={style.adminLink} to="/admin">
+                        <Button
+                            className={location.pathname === '/admin' && style.selected}
+                            type="text"
+                        >
+                            Администрирование
+                        </Button>
+                    </Link>
+                )}
                 <span className={style.userData}>{`${user?.name} ${user?.lastname}`}</span>
             </nav>
         </header>

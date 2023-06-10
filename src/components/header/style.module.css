@@ -29,3 +29,7 @@
     color: greenyellow !important;
     border-bottom: 2px solid greenyellow;
 }
+
+.adminLink button {
+    color: #ffc400;
+}
