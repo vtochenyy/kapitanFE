@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import testIMG from '../../assets/test2.jpg';
 import { GetNewsAction, GetNewsByAggregation } from '../../redux/actions/NewsActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { Spin } from 'antd';
+import { Empty, Spin } from 'antd';
 import style from './style.module.css';
 import { useNavigate } from 'react-router-dom';
 import Search from 'antd/es/input/Search';
@@ -21,19 +21,20 @@ const News = () => {
     }
 
     return (
-        <>
+        <div className={style.wrapper}>
             <div className={style.searchSection}>
                 <h1 className={style.searchTitle}>Новости</h1>
                 <Search
+                    onChange={(e) => onSearch(e.target.value)}
                     loading={loading}
                     rootClassName={style.search}
-                    placeholder="input search text"
+                    placeholder="Введите ключевое слово или часть слова, например: Ярмарка"
                     allowClear
                     onSearch={onSearch}
                 />
             </div>
             <div className={style.container}>
-                {!loading ? (
+                {!loading && !!news.length ? (
                     news.map((newItem) => {
                         return (
                             <div
@@ -51,13 +52,17 @@ const News = () => {
                             </div>
                         );
                     })
+                ) : !loading && !news.length ? (
+                    <div className={style.emptyContainer}>
+                        <Empty description="Нет совпадений :(" />
+                    </div>
                 ) : (
                     <div className={style.spinnerContainer}>
                         <Spin />
                     </div>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 

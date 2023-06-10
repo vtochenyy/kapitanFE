@@ -12,6 +12,8 @@ import {
     SET_MENTIONS_DATA,
     ACTIVATE_MENTIONS_LOADING,
     SET_MENTIONS_TARGET_DATA,
+    ACTIVATE_TEACHERS_LOADING,
+    SET_TEACHERS_DATA,
 } from '../../actionTypes/actionTypes';
 
 let initialState = {
@@ -45,7 +47,7 @@ let initialState = {
     },
     teachers: {
         loading: false,
-        data: {},
+        data: [],
     },
     conditions: {
         loading: false,
@@ -67,6 +69,9 @@ const appReducer = (state = initialState, { type, payload }) => {
             return newState;
         case ACTIVATE_MENTIONS_LOADING:
             newState.mentions.loading = true;
+            return newState;
+        case ACTIVATE_TEACHERS_LOADING:
+            newState.teachers.loading = true;
             return newState;
         case SET_USER_DATA:
             newState.user.data = payload;
@@ -100,6 +105,10 @@ const appReducer = (state = initialState, { type, payload }) => {
         case SET_MENTIONS_DATA:
             newState.mentions.data = payload;
             newState.mentions.loading = false;
+            return newState;
+        case SET_TEACHERS_DATA:
+            newState.teachers.data = payload;
+            newState.teachers.loading = false;
             return newState;
         case SET_MENTIONS_TARGET_DATA:
             newState.mentions.target = payload;

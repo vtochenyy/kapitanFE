@@ -12,6 +12,7 @@ import NewItemPage from './pages/news/newItemPage/NewItemPage';
 import Contacts from './pages/contacts/Contacts';
 import Mentions from './pages/mentions/Mentions';
 import MentionItemPage from './pages/mentions/mentionItemPage/MentionItemPage';
+import Teachers from './pages/teachers/Teachers';
 
 function App() {
     const navigate = useNavigate();
@@ -33,8 +34,8 @@ function App() {
         minHeight: '80vh',
         width: '100%',
         color: 'black',
-        overflowY: 'auto',
         padding: '20px !important',
+        overflowY: 'hidden',
     };
     const footerStyle = {
         textAlign: 'center',
@@ -121,7 +122,7 @@ function App() {
                             path="/teachers"
                             element={
                                 <React.Suspense fallback={<>...</>}>
-                                    <div>teachers</div>
+                                    <Teachers />
                                 </React.Suspense>
                             }
                         />

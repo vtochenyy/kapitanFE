@@ -6,13 +6,17 @@
     padding: 20px;
 }
 
+.wrapper{
+    /*overflow-y: scroll;*/
+}
+
 .searchSection {
     width: 100%;
     height: 20vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #003f00;
+    background: url("../../assets/green2.jpg");
 }
 
 .search {
@@ -44,10 +48,15 @@
 }
 
 .spinnerContainer {
-    grid-column: 1/5;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.emptyContainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
