@@ -3,7 +3,11 @@ import plus from '../../assets/plus.png';
 import { useState } from 'react';
 import AddItemModal from '../../components/addItemModal/AddItemModal';
 import { useDispatch } from 'react-redux';
-import { CreateContactAction, CreateNewAction } from '../../redux/actions/AdminActions';
+import {
+    CreateContactAction,
+    CreateNewAction,
+    CreateTeacherAction,
+} from '../../redux/actions/AdminActions';
 
 const Admin = () => {
     const [isModalVisible, setISModalVisible] = useState(false);
@@ -20,6 +24,8 @@ const Admin = () => {
             dispatch(CreateNewAction(data));
         } else if (type === 'contacts') {
             dispatch(CreateContactAction(data));
+        } else if (type === 'teachers') {
+            dispatch(CreateTeacherAction(data));
         }
         setISModalVisible(false);
     }
@@ -47,7 +53,7 @@ const Admin = () => {
                     <img className={style.plusIMG} alt="not found" src={plus} />
                     <span>Добавить фотоальбом</span>
                 </div>
-                <div onClick={() => handleItemClick('news')} className={style.adminItem}>
+                <div onClick={() => handleItemClick('teachers')} className={style.adminItem}>
                     <img className={style.plusIMG} alt="not found" src={plus} />
                     <span>Добавить педагога</span>
                 </div>

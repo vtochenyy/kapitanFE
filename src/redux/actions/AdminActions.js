@@ -59,3 +59,32 @@ export const CreateContactAction = (params) => {
         }
     };
 };
+
+export const CreateTeacherAction = (params) => {
+    return async (dispatch) => {
+        try {
+            await SimpleRequest({
+                url: '/teachers/create',
+                req_cfg: {
+                    method: 'POST',
+                    data: params,
+                    headers: { UserId: localStorage.getItem('userId') },
+                },
+                preCallBack: () => {
+                    dispatch({ type: ACTIVATE_NEWS_LOADING });
+                },
+                postCallBack: (data) => {
+                    if (data.status < 400) {
+                        notification.success({
+                            placement: 'topRight',
+                            message: 'Уведомление',
+                            description: 'Преподаватель успешно создан!',
+                        });
+                    }
+                },
+            });
+        } catch (e) {
+            dispatch({ type: ERROR });
+        }
+    };
+};

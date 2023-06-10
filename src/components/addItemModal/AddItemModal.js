@@ -12,6 +12,8 @@ const AddItemModal = ({ isOpen, setIsOpen, finalCB, type }) => {
             finalCB({ ...data, preview_img: photoBASE64 }, 'news');
         } else if (type === 'contacts') {
             finalCB({ ...data }, 'contacts');
+        } else if (type === 'teachers') {
+            finalCB({ ...data }, 'teachers');
         }
     }
 
@@ -50,6 +52,27 @@ const AddItemModal = ({ isOpen, setIsOpen, finalCB, type }) => {
                     </Form.Item>
                     <Form.Item name="phoneNumber">
                         <Input placeholder="Введите номер телефона" />
+                    </Form.Item>
+                    <Form.Item name="position">
+                        <Input placeholder="Введите позицию" />
+                    </Form.Item>
+                    <Button className={style.applybtn} htmlType="submit" type="primary">
+                        Подтвердить
+                    </Button>
+                    <Button onClick={handleCancel}>Отменить</Button>
+                </Form>
+            );
+        } else if (type === 'teachers') {
+            return (
+                <Form onFinish={onFinish}>
+                    <Form.Item name="name">
+                        <Input placeholder="Введите имя" />
+                    </Form.Item>
+                    <Form.Item name="lastname">
+                        <Input placeholder="Введите фамилию" />
+                    </Form.Item>
+                    <Form.Item name="middlename">
+                        <Input placeholder="Введите отчество" />
                     </Form.Item>
                     <Form.Item name="position">
                         <Input placeholder="Введите позицию" />
