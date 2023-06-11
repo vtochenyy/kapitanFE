@@ -14,6 +14,10 @@ const AddItemModal = ({ isOpen, setIsOpen, finalCB, type }) => {
             finalCB({ ...data }, 'contacts');
         } else if (type === 'teachers') {
             finalCB({ ...data }, 'teachers');
+        } else if (type === 'mentions') {
+            finalCB({ ...data, preview_img: photoBASE64 }, 'mentions');
+        } else if (type === 'school_about') {
+            finalCB({ title: 'school_about', ...data }, 'school_about');
         }
     }
 
@@ -76,6 +80,34 @@ const AddItemModal = ({ isOpen, setIsOpen, finalCB, type }) => {
                     </Form.Item>
                     <Form.Item name="position">
                         <Input placeholder="Введите позицию" />
+                    </Form.Item>
+                    <Button className={style.applybtn} htmlType="submit" type="primary">
+                        Подтвердить
+                    </Button>
+                    <Button onClick={handleCancel}>Отменить</Button>
+                </Form>
+            );
+        } else if (type === 'mentions') {
+            return (
+                <Form onFinish={onFinish}>
+                    <UploadComponent photoBASE64={photoBASE64} setPhotoBASE64={setPhotoBASE64} />
+                    <Form.Item name="title">
+                        <Input placeholder="Введите заголовок мероприятия" />
+                    </Form.Item>
+                    <Form.Item name="description">
+                        <TextArea placeholder="Введите описание мероприятия" />
+                    </Form.Item>
+                    <Button className={style.applybtn} htmlType="submit" type="primary">
+                        Подтвердить
+                    </Button>
+                    <Button onClick={handleCancel}>Отменить</Button>
+                </Form>
+            );
+        } else if (type === 'school_about') {
+            return (
+                <Form onFinish={onFinish}>
+                    <Form.Item name="description">
+                        <TextArea placeholder="Введите информацию о школе" />
                     </Form.Item>
                     <Button className={style.applybtn} htmlType="submit" type="primary">
                         Подтвердить

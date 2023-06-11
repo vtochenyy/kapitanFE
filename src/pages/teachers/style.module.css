@@ -38,6 +38,7 @@
 }
 
 .teacherItem {
+    max-height: 250px;
     padding: 10px;
     display: flex;
     justify-content: center;

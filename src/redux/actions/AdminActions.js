@@ -1,5 +1,11 @@
 import SimpleRequest from '../../common/generateRequest';
-import { ACTIVATE_NEWS_LOADING, ERROR } from '../actionTypes/actionTypes';
+import {
+    ACTIVATE_CONTACTS_LOADING,
+    ACTIVATE_MENTIONS_LOADING,
+    ACTIVATE_NEWS_LOADING,
+    ACTIVATE_TEACHERS_LOADING,
+    ERROR,
+} from '../actionTypes/actionTypes';
 import { notification } from 'antd';
 
 export const CreateNewAction = (params) => {
@@ -31,6 +37,64 @@ export const CreateNewAction = (params) => {
     };
 };
 
+export const CreateMentionAction = (params) => {
+    return async (dispatch) => {
+        try {
+            await SimpleRequest({
+                url: '/mentions/create',
+                req_cfg: {
+                    method: 'POST',
+                    data: params,
+                    headers: { UserId: localStorage.getItem('userId') },
+                },
+                preCallBack: () => {
+                    dispatch({ type: ACTIVATE_MENTIONS_LOADING });
+                },
+                postCallBack: (data) => {
+                    if (data.status < 400) {
+                        notification.success({
+                            placement: 'topRight',
+                            message: 'Уведомление',
+                            description: 'Мероприятие успешно создано!',
+                        });
+                    }
+                },
+            });
+        } catch (e) {
+            dispatch({ type: ERROR });
+        }
+    };
+};
+
+export const UpdateOrCreateSchoolInfoAction = (params) => {
+    return async (dispatch) => {
+        try {
+            await SimpleRequest({
+                url: '/settings/create',
+                req_cfg: {
+                    method: 'POST',
+                    data: params,
+                    headers: { UserId: localStorage.getItem('userId') },
+                },
+                preCallBack: () => {
+                    dispatch({ type: ACTIVATE_MENTIONS_LOADING });
+                },
+                postCallBack: (data) => {
+                    if (data.status < 400) {
+                        notification.success({
+                            placement: 'topRight',
+                            message: 'Уведомление',
+                            description: 'Информация о школе успешно обновлена!',
+                        });
+                    }
+                },
+            });
+        } catch (e) {
+            dispatch({ type: ERROR });
+        }
+    };
+};
+
 export const CreateContactAction = (params) => {
     return async (dispatch) => {
         try {
@@ -42,7 +106,7 @@ export const CreateContactAction = (params) => {
                     headers: { UserId: localStorage.getItem('userId') },
                 },
                 preCallBack: () => {
-                    dispatch({ type: ACTIVATE_NEWS_LOADING });
+                    dispatch({ type: ACTIVATE_CONTACTS_LOADING });
                 },
                 postCallBack: (data) => {
                     if (data.status < 400) {
@@ -71,7 +135,7 @@ export const CreateTeacherAction = (params) => {
                     headers: { UserId: localStorage.getItem('userId') },
                 },
                 preCallBack: () => {
-                    dispatch({ type: ACTIVATE_NEWS_LOADING });
+                    dispatch({ type: ACTIVATE_TEACHERS_LOADING });
                 },
                 postCallBack: (data) => {
                     if (data.status < 400) {

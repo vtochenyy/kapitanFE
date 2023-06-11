@@ -20,7 +20,7 @@ const MainPage = () => {
                     <h1>О Школе</h1>
                     <div className={style.mainPageContainerBorder}>
                         <img src={testIMG} alt="n/f" />
-                        <div className={style.description}>{about.description}</div>
+                        <div className={style.description}>{about?.description}</div>
                     </div>
                 </div>
             ) : (

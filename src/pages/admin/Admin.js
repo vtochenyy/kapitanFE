@@ -5,8 +5,10 @@ import AddItemModal from '../../components/addItemModal/AddItemModal';
 import { useDispatch } from 'react-redux';
 import {
     CreateContactAction,
+    CreateMentionAction,
     CreateNewAction,
     CreateTeacherAction,
+    UpdateOrCreateSchoolInfoAction,
 } from '../../redux/actions/AdminActions';
 
 const Admin = () => {
@@ -26,6 +28,10 @@ const Admin = () => {
             dispatch(CreateContactAction(data));
         } else if (type === 'teachers') {
             dispatch(CreateTeacherAction(data));
+        } else if (type === 'mentions') {
+            dispatch(CreateMentionAction(data));
+        } else if (type === 'school_about') {
+            dispatch(UpdateOrCreateSchoolInfoAction(data));
         }
         setISModalVisible(false);
     }
@@ -41,11 +47,11 @@ const Admin = () => {
                     <img className={style.plusIMG} alt="not found" src={plus} />
                     <span>Добавить контакт</span>
                 </div>
-                <div onClick={() => handleItemClick('news')} className={style.adminItem}>
+                <div onClick={() => handleItemClick('school_about')} className={style.adminItem}>
                     <img className={style.plusIMG} alt="not found" src={plus} />
                     <span>Добавить информацию о школе</span>
                 </div>
-                <div onClick={() => handleItemClick('news')} className={style.adminItem}>
+                <div onClick={() => handleItemClick('mentions')} className={style.adminItem}>
                     <img className={style.plusIMG} alt="not found" src={plus} />
                     <span>Добавить мероприятие</span>
                 </div>
