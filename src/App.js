@@ -16,6 +16,7 @@ import Teachers from './pages/teachers/Teachers';
 import Admin from './pages/admin/Admin';
 import PhotoAlbum from './pages/photoalbum/PhotoAlbum';
 import PhotoAlbumItemPage from './pages/photoalbum/photoAlbumItemPage/photoAlbumItemPage';
+import Conditions from './pages/conditions/Conditions';
 
 function App() {
     const navigate = useNavigate();
@@ -141,7 +142,7 @@ function App() {
                             path="/conditions"
                             element={
                                 <React.Suspense fallback={<>...</>}>
-                                    <div>conditions</div>
+                                    <Conditions />
                                 </React.Suspense>
                             }
                         />
