@@ -3,6 +3,7 @@ import {
     ACTIVATE_CONTACTS_LOADING,
     ACTIVATE_MENTIONS_LOADING,
     ACTIVATE_NEWS_LOADING,
+    ACTIVATE_PHOTOALBUM_LOADING,
     ACTIVATE_TEACHERS_LOADING,
     ERROR,
 } from '../actionTypes/actionTypes';
@@ -143,6 +144,35 @@ export const CreateTeacherAction = (params) => {
                             placement: 'topRight',
                             message: 'Уведомление',
                             description: 'Преподаватель успешно создан!',
+                        });
+                    }
+                },
+            });
+        } catch (e) {
+            dispatch({ type: ERROR });
+        }
+    };
+};
+
+export const CreatePhotoalbumAction = (params) => {
+    return async (dispatch) => {
+        try {
+            await SimpleRequest({
+                url: '/photoalbum/create',
+                req_cfg: {
+                    method: 'POST',
+                    data: params,
+                    headers: { UserId: localStorage.getItem('userId') },
+                },
+                preCallBack: () => {
+                    dispatch({ type: ACTIVATE_PHOTOALBUM_LOADING });
+                },
+                postCallBack: (data) => {
+                    if (data.status < 400) {
+                        notification.success({
+                            placement: 'topRight',
+                            message: 'Уведомление',
+                            description: 'Фотоальбом успешно создан!',
                         });
                     }
                 },

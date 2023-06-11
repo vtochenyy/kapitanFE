@@ -6,6 +6,11 @@ import UploadComponent from '../uploadComponent/UploadComponent';
 
 const AddItemModal = ({ isOpen, setIsOpen, finalCB, type }) => {
     const [photoBASE64, setPhotoBASE64] = useState('');
+    const [photoAlbumElement1, setPhotoAlbumElement1] = useState('');
+    const [photoAlbumElement2, setPhotoAlbumElement2] = useState('');
+    const [photoAlbumElement3, setPhotoAlbumElement3] = useState('');
+    const [photoAlbumElement4, setPhotoAlbumElement4] = useState('');
+    const [photoAlbumElement5, setPhotoAlbumElement5] = useState('');
 
     function onFinish(data) {
         if (type === 'news') {
@@ -18,6 +23,22 @@ const AddItemModal = ({ isOpen, setIsOpen, finalCB, type }) => {
             finalCB({ ...data, preview_img: photoBASE64 }, 'mentions');
         } else if (type === 'school_about') {
             finalCB({ title: 'school_about', ...data }, 'school_about');
+        } else if (type === 'photo_album') {
+            const photosToSend = [
+                photoAlbumElement1,
+                photoAlbumElement2,
+                photoAlbumElement3,
+                photoAlbumElement4,
+                photoAlbumElement5,
+            ].filter((el) => !!el);
+
+            finalCB(
+                {
+                    ...data,
+                    images: photosToSend,
+                },
+                'photo_album'
+            );
         }
     }
 
@@ -109,6 +130,41 @@ const AddItemModal = ({ isOpen, setIsOpen, finalCB, type }) => {
                     <Form.Item name="description">
                         <TextArea placeholder="Введите информацию о школе" />
                     </Form.Item>
+                    <Button className={style.applybtn} htmlType="submit" type="primary">
+                        Подтвердить
+                    </Button>
+                    <Button onClick={handleCancel}>Отменить</Button>
+                </Form>
+            );
+        } else if (type === 'photo_album') {
+            return (
+                <Form onFinish={onFinish}>
+                    <Form.Item name="title">
+                        <Input placeholder="Введите название фотоальбома" />
+                    </Form.Item>
+                    <Form.Item name="description">
+                        <TextArea placeholder="Введите описание фотоальбома" />
+                    </Form.Item>
+                    <UploadComponent
+                        photoBASE64={photoAlbumElement1}
+                        setPhotoBASE64={setPhotoAlbumElement1}
+                    />
+                    <UploadComponent
+                        photoBASE64={photoAlbumElement2}
+                        setPhotoBASE64={setPhotoAlbumElement2}
+                    />
+                    <UploadComponent
+                        photoBASE64={photoAlbumElement3}
+                        setPhotoBASE64={setPhotoAlbumElement3}
+                    />
+                    <UploadComponent
+                        photoBASE64={photoAlbumElement4}
+                        setPhotoBASE64={setPhotoAlbumElement4}
+                    />
+                    <UploadComponent
+                        photoBASE64={photoAlbumElement5}
+                        setPhotoBASE64={setPhotoAlbumElement5}
+                    />
                     <Button className={style.applybtn} htmlType="submit" type="primary">
                         Подтвердить
                     </Button>

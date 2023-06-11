@@ -30,10 +30,30 @@
 }
 
 .newItem {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
     transition: 0.3s linear;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 1px 11px rgba(0, 0, 0, .27);
+}
+
+.newsTitle{
+    text-align: justify;
+    font-size: 25px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.description{
+    text-align: justify;
+}
+
+.btnContainer{
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .newItem:hover {

@@ -14,6 +14,9 @@ import {
     SET_MENTIONS_TARGET_DATA,
     ACTIVATE_TEACHERS_LOADING,
     SET_TEACHERS_DATA,
+    ACTIVATE_PHOTOALBUM_LOADING,
+    SET_PHOTOALBUM_DATA,
+    SET_TARGET_PHOTOALBUM_DATA,
 } from '../../actionTypes/actionTypes';
 
 let initialState = {
@@ -43,7 +46,8 @@ let initialState = {
     },
     photoalbum: {
         loading: false,
-        data: {},
+        data: [],
+        target: {},
     },
     teachers: {
         loading: false,
@@ -72,6 +76,9 @@ const appReducer = (state = initialState, { type, payload }) => {
             return newState;
         case ACTIVATE_TEACHERS_LOADING:
             newState.teachers.loading = true;
+            return newState;
+        case ACTIVATE_PHOTOALBUM_LOADING:
+            newState.photoalbum.loading = true;
             return newState;
         case SET_USER_DATA:
             newState.user.data = payload;
@@ -113,6 +120,14 @@ const appReducer = (state = initialState, { type, payload }) => {
         case SET_MENTIONS_TARGET_DATA:
             newState.mentions.target = payload;
             newState.mentions.loading = false;
+            return newState;
+        case SET_PHOTOALBUM_DATA:
+            newState.photoalbum.data = payload;
+            newState.photoalbum.loading = false;
+            return newState;
+        case SET_TARGET_PHOTOALBUM_DATA:
+            newState.photoalbum.target = payload;
+            newState.photoalbum.loading = false;
             return newState;
         case ERROR:
             newState.error = true;

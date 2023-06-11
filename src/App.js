@@ -14,6 +14,8 @@ import Mentions from './pages/mentions/Mentions';
 import MentionItemPage from './pages/mentions/mentionItemPage/MentionItemPage';
 import Teachers from './pages/teachers/Teachers';
 import Admin from './pages/admin/Admin';
+import PhotoAlbum from './pages/photoalbum/PhotoAlbum';
+import PhotoAlbumItemPage from './pages/photoalbum/photoAlbumItemPage/photoAlbumItemPage';
 
 function App() {
     const navigate = useNavigate();
@@ -115,7 +117,15 @@ function App() {
                             path="/photoalbum"
                             element={
                                 <React.Suspense fallback={<>...</>}>
-                                    <div>photoalbum</div>
+                                    <PhotoAlbum />
+                                </React.Suspense>
+                            }
+                        />
+                        <Route
+                            path="/photoalbum/:id"
+                            element={
+                                <React.Suspense fallback={<>...</>}>
+                                    <PhotoAlbumItemPage />
                                 </React.Suspense>
                             }
                         />

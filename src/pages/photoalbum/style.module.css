@@ -1,0 +1,25 @@
+.container{
+    padding: 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+}
+
+.emptyContainer{}
+
+.spinnerContainer{}
+
+.photoAlbumItem{
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, .27);
+    transition: 0.1s linear;
+}
+
+.photoAlbumItem:hover{
+    cursor: pointer;
+    transform: scale(1.02);
+    box-shadow: 0 1px 11px green;
+}
+

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import testIMG from '../../assets/test2.jpg';
 import { GetNewsAction, GetNewsByAggregation } from '../../redux/actions/NewsActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { Empty, Spin } from 'antd';
+import { Button, Empty, Spin } from 'antd';
 import style from './style.module.css';
 import { useNavigate } from 'react-router-dom';
 import Search from 'antd/es/input/Search';
@@ -37,18 +37,26 @@ const News = () => {
                 {!loading && !!news.length ? (
                     news.map((newItem) => {
                         return (
-                            <div
-                                onClick={() => navigate(`/news/${newItem.id}`)}
-                                className={style.newItem}
-                                key={newItem.id}
-                            >
-                                <img
-                                    className={style.preview_img}
-                                    src={newItem.preview_img ?? testIMG}
-                                    alt="not found"
-                                />
-                                <p>{newItem.title}</p>
-                                <div>{newItem.description.slice(0, 100) + '...'}</div>
+                            <div className={style.newItem} key={newItem.id}>
+                                <div>
+                                    <img
+                                        className={style.preview_img}
+                                        src={newItem.preview_img ?? testIMG}
+                                        alt="not found"
+                                    />
+                                    <p className={style.newsTitle}>{newItem.title}</p>
+                                    <div className={style.description}>
+                                        {newItem.description.slice(0, 100) + '...'}
+                                    </div>
+                                </div>
+                                <div className={style.btnContainer}>
+                                    <Button
+                                        onClick={() => navigate(`/news/${newItem.id}`)}
+                                        type="primary"
+                                    >
+                                        Читать
+                                    </Button>
+                                </div>
                             </div>
                         );
                     })

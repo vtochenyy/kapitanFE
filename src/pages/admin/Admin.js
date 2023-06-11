@@ -7,6 +7,7 @@ import {
     CreateContactAction,
     CreateMentionAction,
     CreateNewAction,
+    CreatePhotoalbumAction,
     CreateTeacherAction,
     UpdateOrCreateSchoolInfoAction,
 } from '../../redux/actions/AdminActions';
@@ -32,6 +33,8 @@ const Admin = () => {
             dispatch(CreateMentionAction(data));
         } else if (type === 'school_about') {
             dispatch(UpdateOrCreateSchoolInfoAction(data));
+        } else if (type === 'photo_album') {
+            dispatch(CreatePhotoalbumAction(data));
         }
         setISModalVisible(false);
     }
@@ -55,7 +58,7 @@ const Admin = () => {
                     <img className={style.plusIMG} alt="not found" src={plus} />
                     <span>Добавить мероприятие</span>
                 </div>
-                <div onClick={() => handleItemClick('news')} className={style.adminItem}>
+                <div onClick={() => handleItemClick('photo_album')} className={style.adminItem}>
                     <img className={style.plusIMG} alt="not found" src={plus} />
                     <span>Добавить фотоальбом</span>
                 </div>
